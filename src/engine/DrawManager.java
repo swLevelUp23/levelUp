@@ -351,7 +351,12 @@ public final class DrawManager {
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
 
-
+	public void drawBossLife(final Screen screen, final int fullHp, final int hp){
+		int lives = (hp/fullHp * 100) * (frame.getWidth()-10) ;
+		backBufferGraphics.setColor(Color.red);
+		backBufferGraphics.drawRect(5, 40 , frame.getWidth()-5, 10);
+		backBufferGraphics.fillRect(5, 40 , lives, 10);
+	}
 
 	/**
 	 * Draws number of items currently in inventory on screen.
