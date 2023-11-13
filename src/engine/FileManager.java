@@ -188,6 +188,12 @@ public final class FileManager {
         } else if (spriteType == SpriteType.EnemyShipC2) {
             inputStream = DrawManager.class.getClassLoader()
                     .getResourceAsStream("enemyshipGraphics");
+        } else if (spriteType == SpriteType.EnemyShipD1) {
+            inputStream = DrawManager.class.getClassLoader()
+                    .getResourceAsStream("enemyshipGraphics");
+        } else if (spriteType == SpriteType.EnemyShipD2) {
+            inputStream = DrawManager.class.getClassLoader()
+                    .getResourceAsStream("enemyshipGraphics");
         } else if (spriteType == SpriteType.EnemyShipSpecial) {
             inputStream = DrawManager.class.getClassLoader()
                     .getResourceAsStream("specialenemyGraphics");
