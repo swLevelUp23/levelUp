@@ -139,6 +139,7 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
 
+
 			fileManager.loadSprite(spriteMap);
 
 			fileManager.changeSprite(spriteMap,SpriteType.Bullet,0);
@@ -199,9 +200,6 @@ public final class DrawManager {
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
-
-		// drawBorders(screen);
-		// drawGrid(screen);
 	}
 
 	/**

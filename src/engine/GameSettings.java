@@ -67,4 +67,7 @@ public class GameSettings {
 		return shootingFrecuency;
 	}
 
+	/** 폭탄 투하 빈도 */
+	public final int getDropFrecuency() { return shootingFrecuency + 1000; }
+
 }

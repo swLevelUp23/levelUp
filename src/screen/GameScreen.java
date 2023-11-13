@@ -69,6 +69,9 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
+
+	/** 적의 폭탄 공격 set */
+	private Set<Bomb> bombs;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -242,6 +245,9 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
+
+		/** 적의 폭탄 hashSet */
+		this.bombs = new HashSet<Bomb>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -661,13 +667,15 @@ public class GameScreen extends Screen {
 
 				this.enemyShipFormation.update();
 				this.enemyShipFormation.shoot(this.bullets);
+				this.enemyShipFormation.dropBomb(this.bombs);
 			}
 
 			useSkill();
 			manageCollisions();
 			cleanBullets();
 			updateItems();
-			//draw();
+			/** bombs이 화면 경계를 벗어나면 청소 */
+			cleanBombs();
 
 			if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 					&& !this.levelFinished) {
@@ -755,6 +763,12 @@ public class GameScreen extends Screen {
 		for (Item item : this.items)
 			drawManager.drawEntity(item, item.getPositionX(),
 					item.getPositionY());
+
+		/** 폭탄 객체 그리기 */
+		for (Bomb bomb : this.bombs)
+			drawManager.drawEntity(bomb, bomb.getPositionX(),
+					bomb.getPositionY());
+
 		if (this.ship.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
@@ -769,6 +783,7 @@ public class GameScreen extends Screen {
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawItems(this, this.ship.getItemQueue().getItemQue(), this.ship.getItemQueue().getSize());
+
 		if (this.gameState.getMode() == 2) {
 			drawManager.drawLives2(this, this.lives2);
 			drawManager.drawItems2(this, this.ship2.getItemQueue().getItemQue(), this.ship2.getItemQueue().getSize());
@@ -843,6 +858,19 @@ public class GameScreen extends Screen {
 		}
 		this.items.removeAll(recyclableItem);
 		ItemPool.recycle(recyclableItem);
+	}
+	/**
+	 * 폭탄이 화면을 벗어나거나 Ship에 닿으면 폭탄 청소
+	 * */
+	private void cleanBombs() {
+		Set<Bomb> recyclableBomb = new HashSet<Bomb>();
+		for (Bomb bomb : this.bombs) {
+			bomb.update();
+			if (bomb.getPositionY() < SEPARATION_LINE_HEIGHT
+					|| bomb.getPositionY() > this.height)
+				recyclableBomb.add(bomb);
+		}
+		this.bombs.removeAll(recyclableBomb);
 	}
 
 	/**
