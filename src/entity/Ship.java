@@ -63,6 +63,10 @@ public class Ship extends Entity {
      * Speed of the ship.
      */
     private int speed;
+    /** ship의 현재 컬러 */
+    private Color currentColor;
+    /** ship의 시작 컬러 */
+    private Color initColor;
 
     public boolean Invincible;
 
@@ -103,6 +107,8 @@ public class Ship extends Entity {
         this.invincibleCooldown = Core.getCooldown(impactInterval);
         this.auxiliaryCooldown = Core.getCooldown(impactInterval);
 
+        this.currentColor = color;
+        this.initColor = color;
         this.speed = originalSpeed;
         this.BULLET_SPEED = ORIGINAL_BULLET_SPEED;
         this.itemQueue = new ItemQueue();
@@ -343,5 +349,8 @@ public class Ship extends Entity {
 
     public int getOriginalSpeed() {
         return originalSpeed;
+    }
+    public Color getInitColor(){
+        return this.initColor;
     }
 }
