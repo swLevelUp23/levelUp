@@ -356,6 +356,7 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.red);
 		backBufferGraphics.drawRect(5, 40 , frame.getWidth()-5, 10);
 		backBufferGraphics.fillRect(5, 40 , lives, 10);
+		backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
 	}
 
 	/**
