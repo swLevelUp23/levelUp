@@ -156,6 +156,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				else if (i / (float) this.nShipsHigh < PROPORTION_B
 						+ PROPORTION_C)
 					spriteType = SpriteType.EnemyShipB1;
+
 				else
 					spriteType = SpriteType.EnemyShipA1;
 
@@ -190,6 +191,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
+					case EnemyShipD1:
+						enemyShip = new EnemyShipD((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
