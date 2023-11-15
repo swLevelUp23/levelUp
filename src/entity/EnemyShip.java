@@ -129,6 +129,7 @@ public class EnemyShip extends Entity {
 		if (this.HP <= 0) {
 			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
 			this.isDestroyed = true;
+			this.setColor(Color.WHITE);
 			this.spriteType = SpriteType.Explosion;
 		}
 	}
