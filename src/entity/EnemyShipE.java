@@ -26,14 +26,10 @@ public class EnemyShipE extends EnemyShip {
     public final void update() {
         if (this.animationCooldown.checkFinished()) {
             this.animationCooldown.reset();
-            if (spriteType == DrawManager.SpriteType.EnemyShipC1) {
-                spriteType = DrawManager.SpriteType.EnemyShipC2;
+            if (this.getColor()==Color.WHITE)
                 this.setColor(Color.BLACK);
-            }
-            else {
-                spriteType = DrawManager.SpriteType.EnemyShipC1;
+            else
                 this.setColor(Color.WHITE);
-            }
         }
     }
     public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
