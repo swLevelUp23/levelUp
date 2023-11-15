@@ -49,8 +49,6 @@ public final class BulletPool {
 			bullet.setPositionY(positionY);
 			bullet.setSpeed(speed);
 			bullet.setSprite();
-			// Will add a function to select the Bigger version and the base version later.
-//			bullet.setBiggerSprite();
 		} else {
 			bullet = new Bullet(positionX, positionY, speed, shooter);
 			bullet.setPositionX(positionX - bullet.getWidth() / 2);
