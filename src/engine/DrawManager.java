@@ -96,7 +96,8 @@ public final class DrawManager {
 
 		AuxiliaryShips,
 
-		BombShape,
+		BombShape_small,
+		BombShape_large,
 
 		InvincibleShape,
 
@@ -134,11 +135,11 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.Item, new boolean[3][3]);
 			spriteMap.put(SpriteType.Life, new boolean[7][7]);
 			spriteMap.put(SpriteType.AuxiliaryShips, new boolean[12][8]);
-			spriteMap.put(SpriteType.BombShape, new boolean[4][6]);
+			spriteMap.put(SpriteType.BombShape_small, new boolean[4][6]);
+			spriteMap.put(SpriteType.BombShape_large, new boolean[5][7]);
 			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
-
 
 			fileManager.loadSprite(spriteMap);
 
@@ -365,7 +366,7 @@ public final class DrawManager {
     
 		backBufferGraphics.drawString(Integer.toString(inventory), 205, screen.getHeight() + 25);
 
-		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
@@ -394,7 +395,7 @@ public final class DrawManager {
 		backBufferGraphics.drawString(Integer.toString(inventory), 415, screen.getHeight() + 25);
 
 
-		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);

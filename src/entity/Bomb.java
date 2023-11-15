@@ -22,17 +22,17 @@ public class Bomb extends Entity{
     private int shooter;
 
     public Bomb(int positionX, int positionY, double bombSpeed, int shooter) {
-        super(positionX, positionY, 3*2, 5*2, Color.BLUE);
+        super(positionX, positionY, 3*2, 5*2, Color.MAGENTA);
         this.speed = bombSpeed;
         this.shooter = shooter;
-        this.spriteType = SpriteType.BombShape;
+        this.spriteType = SpriteType.BombShape_large;
         setSprite();
     }
 
     /** 폭탄 공격의 spriteType 지정 */
     public final void setSprite(){
         if(speed >= 0)
-            this.spriteType = SpriteType.BombShape;
+            this.spriteType = SpriteType.BombShape_large;
     }
 
     /** 폭탄 위치를 현재 x위치 += 폭탄의 이동 속도로 변경 */
