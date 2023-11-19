@@ -100,13 +100,15 @@ public final class DrawManager {
 
 		AuxiliaryShips,
 
-		BombShape,
+		BombShape_small,
+		BombShape_large,
 
 		InvincibleShape,
 
 		SpeedUpShape,
 
-		AuxiliaryShape
+		AuxiliaryShape,
+		Boss
 
 
 	};
@@ -140,10 +142,12 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.Item, new boolean[3][3]);
 			spriteMap.put(SpriteType.Life, new boolean[7][7]);
 			spriteMap.put(SpriteType.AuxiliaryShips, new boolean[12][8]);
-			spriteMap.put(SpriteType.BombShape, new boolean[4][6]);
+			spriteMap.put(SpriteType.BombShape_small, new boolean[4][6]);
+			spriteMap.put(SpriteType.BombShape_large, new boolean[5][7]);
 			spriteMap.put(SpriteType.InvincibleShape, new boolean[5][5]);
 			spriteMap.put(SpriteType.SpeedUpShape, new boolean[5][4]);
 			spriteMap.put(SpriteType.AuxiliaryShape, new boolean[5][4]);
+			spriteMap.put(SpriteType.Boss, new boolean[19][14]);
 
 			fileManager.loadSprite(spriteMap);
 
@@ -205,9 +209,6 @@ public final class DrawManager {
 
 		fontRegularMetrics = backBufferGraphics.getFontMetrics(fontRegular);
 		fontBigMetrics = backBufferGraphics.getFontMetrics(fontBig);
-
-		// drawBorders(screen);
-		// drawGrid(screen);
 	}
 
 	/**
@@ -355,7 +356,13 @@ public final class DrawManager {
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
 
-
+	public void drawBossLife(final Screen screen, final int fullHp, final int hp){
+		int lives = (hp/fullHp * 100) * (frame.getWidth()-10) ;
+		backBufferGraphics.setColor(Color.red);
+		backBufferGraphics.drawRect(5, 40 , frame.getWidth()-5, 10);
+		backBufferGraphics.fillRect(5, 40 , lives, 10);
+		backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
+	}
 
 	/**
 	 * Draws number of items currently in inventory on screen.
@@ -373,7 +380,7 @@ public final class DrawManager {
     
 		backBufferGraphics.drawString(Integer.toString(inventory), 205, screen.getHeight() + 25);
 
-		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
@@ -402,7 +409,7 @@ public final class DrawManager {
 		backBufferGraphics.drawString(Integer.toString(inventory), 415, screen.getHeight() + 25);
 
 
-		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape, false);
+		Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
 		Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
 		Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
 		Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);

@@ -69,6 +69,9 @@ public class GameScreen extends Screen {
 	private Set<Bullet> bullets;
 
 	private Set<Item> items;
+
+	/** 적의 폭탄 공격 set */
+	private Set<Bomb> bombs;
 	/** Current score. */
 	private int score;
 	/** First Player's lives left. */
@@ -242,6 +245,9 @@ public class GameScreen extends Screen {
 		this.screenFinishedCooldown = Core.getCooldown(SCREEN_CHANGE_INTERVAL);
 		this.bullets = new HashSet<Bullet>();
 		this.items = new HashSet<Item>();
+
+		/** 적의 폭탄 hashSet */
+		this.bombs = new HashSet<Bomb>();
 
 		// Special input delay / countdown.
 		this.gameStartTime = System.currentTimeMillis();
@@ -653,7 +659,6 @@ public class GameScreen extends Screen {
 					this.lives2--;
 					this.magazine2 = 5;
 				}
-
 				this.ship.update();
 				if (this.gameState.getMode() == 2) {
 					this.ship2.update();
@@ -661,13 +666,14 @@ public class GameScreen extends Screen {
 
 				this.enemyShipFormation.update();
 				this.enemyShipFormation.shoot(this.bullets);
+				this.enemyShipFormation.dropBomb(this.bombs);
 			}
-
 			useSkill();
 			manageCollisions();
 			cleanBullets();
 			updateItems();
-			//draw();
+			/** bombs이 화면 경계를 벗어나면 청소 */
+			cleanBombs();
 
 			if ((this.enemyShipFormation.isEmpty() || (this.gameState.getMode() == 1 && this.lives == 0) || (this.gameState.getMode() == 2 && this.lives == 0 && this.lives2 == 0))
 					&& !this.levelFinished) {
@@ -755,6 +761,12 @@ public class GameScreen extends Screen {
 		for (Item item : this.items)
 			drawManager.drawEntity(item, item.getPositionX(),
 					item.getPositionY());
+
+		/** 폭탄 객체 그리기 */
+		for (Bomb bomb : this.bombs)
+			drawManager.drawEntity(bomb, bomb.getPositionX(),
+					bomb.getPositionY());
+
 		if (this.ship.isExistAuxiliaryShips()) {
 			for (Ship auxiliaryShip : this.ship.getAuxiliaryShips()) {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
@@ -769,6 +781,7 @@ public class GameScreen extends Screen {
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawItems(this, this.ship.getItemQueue().getItemQue(), this.ship.getItemQueue().getSize());
+
 		if (this.gameState.getMode() == 2) {
 			drawManager.drawLives2(this, this.lives2);
 			drawManager.drawItems2(this, this.ship2.getItemQueue().getItemQue(), this.ship2.getItemQueue().getSize());
@@ -844,30 +857,67 @@ public class GameScreen extends Screen {
 		this.items.removeAll(recyclableItem);
 		ItemPool.recycle(recyclableItem);
 	}
+	/**
+	 * 폭탄이 화면을 벗어나거나 Ship에 닿으면 폭탄 청소
+	 * */
+	private void cleanBombs() {
+		Set<Bomb> recyclableBomb = new HashSet<Bomb>();
+		for (Bomb bomb : this.bombs) {
+			bomb.update();
+			if (bomb.getPositionY() < SEPARATION_LINE_HEIGHT
+					|| bomb.getPositionY() > this.height)
+				recyclableBomb.add(bomb);
+		}
+		this.bombs.removeAll(recyclableBomb);
+	}
 
 	/**
 	 * Manages collisions between bullets and ships.
 	 */
+	private void updateShipAttacked(Ship ship, int playerNumber){
+		if(!ship.isDestroyed()){
+			ship.destroy();
+			if(playerNumber == 1){
+				if(this.lives > 0){
+					this.lives--;
+					SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
+				}
+			}
+			else if(playerNumber == 2){
+				if(this.lives2 > 0){
+					this.lives2--;
+					SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
+				}
+			}
+			this.logger.info("Hit on player" + playerNumber +  " ship, " + this.lives + " lives remaining.");
+        }
+	}
 	private void manageCollisions() {
 		Set<Bullet> recyclable = new HashSet<Bullet>();
+		Set<Bomb> recyclable_bomb = new HashSet<Bomb>();
 		if (gameState.getMode() == 1) {
+			/** enemy가 폭탄을 투하 하는 경우 */
+			for(Bomb bomb : this.bombs){
+				if(bomb.getSpeed() > 0){
+					if(checkCollision(bomb, this.ship) && !this.levelFinished && !this.ship.isInvincible()){
+						recyclable_bomb.add(bomb);
+						updateShipAttacked(this.ship, 1);
+						this.ship.update();
+					}
+				}
+			}
+
             for (Bullet bullet : this.bullets) {
+				/** enemy가 총알을 쏘는 경우 */
                 if (bullet.getSpeed() > 0) {
                     if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {
                         recyclable.add(bullet);
-                        if (!this.ship.isDestroyed()) {
-                            this.ship.destroy();
-                            if (this.lives > 0) {
-                                this.lives--;
-                            }
-							if (this.lives <= 0)
-								SoundManager.playSound("SFX/S_Ally_Destroy_b", "Allay_Des_b", false, false);
-							else
-								SoundManager.playSound("SFX/S_Ally_Destroy_a", "Allay_Des_a", false, false);
-                            this.logger.info("Hit on player1 ship, " + this.lives + " lives remaining.");
-                        }
+                        updateShipAttacked(this.ship, 1);
                     }
-                } else {
+                }
+
+				/** ship이 총알을 쏘는 경우 */
+				else {
                     for (EnemyShip enemyShip : this.enemyShipFormation) {
                         if (!enemyShip.isDestroyed() && checkCollision(bullet, enemyShip)) {
                             if (this.isBomb) {
@@ -907,6 +957,20 @@ public class GameScreen extends Screen {
         }
 
 		if (gameState.getMode() == 2) {
+			for(Bomb bomb : this.bombs){
+				if(bomb.getSpeed() > 0){
+					if(checkCollision(bomb, this.ship) && !this.levelFinished && !this.ship.isInvincible()){
+						recyclable_bomb.add(bomb);
+						updateShipAttacked(this.ship, 1);
+						this.ship.update();
+					}
+					if(checkCollision(bomb, this.ship2) && !this.levelFinished && !this.ship2.isInvincible()){
+						recyclable_bomb.add(bomb);
+						updateShipAttacked(this.ship2, 2);
+						this.ship2.update();
+					}
+				}
+			}
 			for (Bullet bullet : this.bullets) {
 				if (bullet.getSpeed() > 0) {
 					if (checkCollision(bullet, this.ship) && !this.levelFinished && !this.ship.isInvincible()) {
@@ -1050,7 +1114,6 @@ public class GameScreen extends Screen {
 		BulletPool.recycle(recyclable);
 		ItemPool.recycle(recyclableItem);
 	}
-
 
 	/** Use skill*/
 	private void useSkill(){

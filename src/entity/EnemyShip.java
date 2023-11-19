@@ -42,6 +42,8 @@ public class EnemyShip extends Entity {
 
 	/** 총알 속도 */
 	protected static final int BULLET_SPEED = 4;
+	/** 폭탄 속도 */
+	protected  static final int DROP_SPEED = 3;
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -112,6 +114,12 @@ public class EnemyShip extends Entity {
 		shootingCooldown.timedown(0);
 
 	}
+	/** 폭탄 투하 */
+	public void dropBomb(final Set<Bomb> bombs, Cooldown dropCooldown){
+		bombs.add(BombPool.getBomb(positionX
+				+ width / 2, positionY, DROP_SPEED, 0));
+		dropCooldown.timedown(0);
+	}
 
 	/**
 	 * Destroys the ship, causing an explosion.
@@ -121,6 +129,7 @@ public class EnemyShip extends Entity {
 		if (this.HP <= 0) {
 			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
 			this.isDestroyed = true;
+			this.setColor(Color.WHITE);
 			this.spriteType = SpriteType.Explosion;
 		}
 	}

@@ -31,6 +31,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int Y_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
+	/** Proportion of differences between 폭탄 투하 times.*/
+	private static  final double DROP_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
 	private static final int SIDE_MARGIN = 20;
 	/** Margin on the bottom of the screen. */
@@ -51,6 +53,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private List<List<EnemyShip>> enemyShips;
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
+	/** 폭탄 투하 cooldown */
+	private Cooldown dropCooldown;
 	/** Number of ships in the formation - horizontally. */
 	private int nShipsWide;
 	/** Number of ships in the formation - vertically. */
@@ -59,6 +63,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int shootingInterval;
 	/** Variance in the time between shots. */
 	private int shootingVariance;
+	/** Time between 폭탄 투하 . */
+	private int dropInterval;
+	/** Variance in the time between 폭탄 투하. */
+	private int dropVariance;
 	/** Initial ship speed. */
 	private int baseSpeed;
 	/** Speed of the ships. */
@@ -132,6 +140,10 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.shootingInterval = gameSettings.getShootingFrecuency();
 		this.shootingVariance = (int) (gameSettings.getShootingFrecuency()
 				* SHOOTING_VARIANCE);
+		/** 폭탄 투하 interval과 variance */
+		this.dropInterval = gameSettings.getDropFrecuency();
+		this.dropVariance = (int) (gameSettings.getDropFrecuency()
+				* DROP_VARIANCE);
 		this.baseSpeed = gameSettings.getBaseSpeed();
 		this.movementSpeed = this.baseSpeed;
 		this.positionX = INIT_POS_X;
@@ -275,6 +287,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			this.shootingCooldown = Core.getVariableCooldown(shootingInterval,
 					shootingVariance);
 			this.shootingCooldown.reset();
+		}
+		/** dropCooldown 초기화 */
+		if(this.dropCooldown == null) {
+			this.dropCooldown = Core.getVariableCooldown(dropInterval,
+					dropVariance);
+			this.dropCooldown.reset();
 		}
 		cleanUp();
 
@@ -488,6 +506,24 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				EnemyShip shooter = this.shooters.get(index);
 				shooter.shoot(bullets, shootingCooldown);
 				SoundManager.playSound("SFX/S_Enemy_Shoot", "EnemyShoot", false, false);
+			}
+		}
+	}
+	/** 폭탄 투하 */
+	public final void dropBomb(final Set<Bomb> bombs) {
+
+		if (this.dropCooldown.checkFinished()) {
+			this.dropCooldown.reset();
+			ArrayList<Boolean> drop = new ArrayList<>();
+			for (int i=0;i<this.shooters.size();i++) drop.add(false);
+			for (int i = 0; i < gameState.getLevel(); i++) {
+				int index = (int) (Math.random() * (this.shooters.size()-1));
+				if (drop.get(index))continue;
+				drop.set(index, true);
+				EnemyShip shooter = this.shooters.get(index);
+				shooter.dropBomb(bombs, dropCooldown);
+				/** 폭탄 투하 시 음향 효과 나중에 추가 */
+				// SoundManager.playSound("SFX/S_Enemy_Drop_Bomb", "EnemyDrop", false, false);
 			}
 		}
 	}
