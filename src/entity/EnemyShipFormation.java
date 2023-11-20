@@ -186,9 +186,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 				// special enemy setting
 				if (special_enemy.contains(col*nShipsHigh+ship_index)) {
-					spriteType = SpriteType.EnemyShipD1;
+					if ((col*nShipsHigh+ship_index)%2==0) {
+						spriteType = SpriteType.EnemyShipD1;
+					} else {
+						spriteType = SpriteType.EnemyShipE;
+					}
 				}
-
 
 				EnemyShip enemyShip = null;
 
@@ -226,6 +229,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipE:
+						enemyShip = new EnemyShipE((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
