@@ -109,6 +109,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int trackYpos;
 	/** check to print only one log: The last enemy ship moves faster. */
 	private int checkFirst = 1;
+	/** store special enemy ship's index */
+	private List<Integer> special_enemy;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -148,6 +150,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.positionY = INIT_POS_Y;
 		this.shooters = new ArrayList<EnemyShip>();
 		this.setXpos = INIT_POS_X;
+		this.special_enemy = new ArrayList<Integer>();
 		SpriteType spriteType;
 
 		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
@@ -160,6 +163,15 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		if (nShipsWide > 7)
 			lastStage = true;
 
+		// The list store a special enemy's index.
+		Random random = new Random();
+		for (int i=0; i< nShipsHigh; i++) {
+			int ran = random.nextInt(nShipsHigh*nShipsWide+1);
+			if (!special_enemy.contains(ran))
+				special_enemy.add(ran);
+		}
+
+		int col = 0;
 		for (List<EnemyShip> column : this.enemyShips) {
 			int ship_index = 0;
 			for (int i = 0; i < this.nShipsHigh; i++) {
@@ -171,6 +183,15 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 				else
 					spriteType = SpriteType.EnemyShipA1;
+
+				// special enemy setting
+				if (special_enemy.contains(col*nShipsHigh+ship_index)) {
+					if ((col*nShipsHigh+ship_index)%2==0) {
+						spriteType = SpriteType.EnemyShipD1;
+					} else {
+						spriteType = SpriteType.EnemyShipE;
+					}
+				}
 
 				EnemyShip enemyShip = null;
 
@@ -208,6 +229,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipE:
+						enemyShip = new EnemyShipE((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
@@ -218,6 +246,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				this.shipCount++;
 				ship_index++;
 			}
+			col++;
 		}
 
 		this.shipWidth = this.enemyShips.get(0).get(0).getWidth();
