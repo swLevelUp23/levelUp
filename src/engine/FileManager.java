@@ -279,7 +279,7 @@ public final class FileManager {
      * @return Sorted list of scores - players.
      * @throws IOException In case of loading problems.
      */
-    public List<Score> loadHighScores(final int gameMode) throws IOException {
+    public List<Score> loadHighScores(final int gameMode, boolean skillMode) throws IOException {
 
         List<Score> highScores = new ArrayList<Score>();
         InputStream inputStream = null;
@@ -288,10 +288,12 @@ public final class FileManager {
         try {
             String scoresPath = "";
             scoresPath += File.separator;
-            if (gameMode == 1)
-                scoresPath += "scores_1p";
+            if (gameMode == 1 && skillMode)
+                scoresPath += "scores_1p & skill mode";
+            else if (gameMode == 1 && !skillMode)
+                scoresPath += "scores_1p & non-skill mode";
             else
-                scoresPath += "scores_2p";
+                scoresPath += "scores_2p & non-skill mode";
 
             File scoresFile = new File("res" + File.separator + scoresPath);
             if (!scoresFile.exists())
@@ -334,17 +336,19 @@ public final class FileManager {
      * @param highScores High scores to save.
      * @throws IOException In case of loading problems.
      */
-    public void saveHighScores(final List<Score> highScores, final int gameMode)
+    public void saveHighScores(final List<Score> highScores, final int gameMode, boolean skillMode)
             throws IOException {
         OutputStream outputStream = null;
         BufferedWriter bufferedWriter = null;
 
         try {
             String scoresPath = "";
-            if (gameMode == 1)
-                scoresPath += "scores_1p";
+            if (gameMode == 1 && skillMode)
+                scoresPath += "scores_1p & skill mode";
+            else if (gameMode == 1 && !skillMode)
+                scoresPath += "scores_1p & non-skill mode";
             else
-                scoresPath += "scores_2p";
+                scoresPath += "scores_2p & non-skill mode";
 
             File scoresFile = new File("res" + File.separator + scoresPath);
             if (!scoresFile.exists())

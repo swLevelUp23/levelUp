@@ -114,7 +114,7 @@ public class ScoreScreen extends Screen {
         AchievementManager.getInstance().checkScore(this.score);
 
         try {
-            this.highScores = Core.getFileManager().loadHighScores(this.gameMode);
+            this.highScores = Core.getFileManager().loadHighScores(this.gameMode, SelectScreen.skillModeOn);
             if (highScores.size() < MAX_HIGH_SCORE_NUM
                     || highScores.get(highScores.size() - 1).getScore()
                     < this.score)
@@ -213,7 +213,7 @@ public class ScoreScreen extends Screen {
             highScores.remove(highScores.size() - 1);
 
         try {
-            Core.getFileManager().saveHighScores(highScores, gameMode);
+            Core.getFileManager().saveHighScores(highScores, gameMode, SelectScreen.skillModeOn);
         } catch (IOException e) {
             logger.warning("Couldn't load high scores!");
         }
