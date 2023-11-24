@@ -539,7 +539,7 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, achievementString, screen.getHeight() / 3
 				* 2 + fontRegularMetrics.getHeight() * 5-fontRegularMetrics.getHeight()*2);
-		if (option == 7)
+		if (option == 9)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
