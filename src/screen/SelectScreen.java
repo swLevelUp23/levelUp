@@ -2,6 +2,7 @@ package screen;
 
 import engine.Cooldown;
 import engine.Core;
+import engine.GameState;
 import engine.SoundManager;
 
 import java.awt.event.KeyEvent;
@@ -20,6 +21,8 @@ public class SelectScreen extends Screen{
     /** Separate function when space is down*/
     private boolean canEscape = false;
 
+    private GameState gameState;
+
     /**
      * Constructor, establishes the properties of the screen.
      *
@@ -27,11 +30,12 @@ public class SelectScreen extends Screen{
      * @param height Screen height.
      * @param fps    Frames per second, frame rate at which the game is run.
      */
-    public SelectScreen(int width, int height, int fps){
+    public SelectScreen(int width, int height, int fps, GameState gameState){
         super(width, height, fps);
         this.returnCode = 8;
         this.selectionCooldown = Core.getCooldown(SELECTION_TIME);
         this.selectionCooldown.reset();
+        this.gameState = gameState;
     }
 
     /**
@@ -90,7 +94,11 @@ public class SelectScreen extends Screen{
             }
 
         }
+        gameState.setSkillMode(skillModeOn);
+
     }
+
+
 
     /**
      * Draws the elements associated with the screen.
@@ -102,5 +110,6 @@ public class SelectScreen extends Screen{
 
         drawManager.completeDrawing(this);
     }
+
 
 }

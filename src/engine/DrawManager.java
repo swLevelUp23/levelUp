@@ -1260,11 +1260,24 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawClear(final Screen screen, final int option, final int level) {
-		String titleString = "LEVEL  " + level + "  Clear";
+	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
 
+		String modeString = mode + " PLAYER MODE";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, modeString, screen.getHeight() / 3);
+
+		String titleString = "LEVEL  " + level + "  Clear";
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
+
+		String skillString;
+		if (skill)
+			skillString = "SKILL MODE ON";
+		else
+			skillString = "SKILL MODE OFF";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, skillString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 4);
+
 
 		String continueString = "Continue";
 		String exitString = "Exit";
