@@ -46,6 +46,8 @@ public final class DrawManager {
 	private static Graphics backBufferGraphics;
 	/** Buffer image. */
 	private static BufferedImage backBuffer;
+	/** Small sized font. */
+	private static Font fontSmall;
 	/** Normal sized font. */
 	private static Font fontRegular;
 	/** Normal sized font properties. */
@@ -160,6 +162,7 @@ public final class DrawManager {
 			logger.info("Finished loading the sprites.");
 
 			// Font loading.
+			fontSmall = fileManager.loadFont(10f);
 			fontRegular = fileManager.loadFont(14f);
 			fontBig = fileManager.loadFont(24f);
 			logger.info("Finished loading the fonts.");
@@ -505,6 +508,7 @@ public final class DrawManager {
 		String settingString = "Setting";
 		String exitString = "exit";
 		String achievementString = "Achievements";
+		String helpString = "Help";
 
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
@@ -538,12 +542,18 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, achievementString, screen.getHeight() / 3
 				* 2 + fontRegularMetrics.getHeight() * 5-fontRegularMetrics.getHeight()*2);
+		if (option == 9)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, helpString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
+				* 2 + fontRegularMetrics.getHeight() * 9-fontRegularMetrics.getHeight()*2);
 	}
 
 	/**
@@ -1337,6 +1347,56 @@ public final class DrawManager {
 		}
 
 
+	}
+
+	public void drawHelpScreen(final Screen screen){
+		backBufferGraphics.setColor(Color.green);
+		drawCenteredBigString(screen, "help", 80);
+
+		//SKILL1_BURST
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.drawRect(60,120,70,70);
+		for(int i=0; i<3; i++){
+			Bullet bullet = new Bullet(80+10*i, 150, -10, 0);
+			drawEntity(bullet, bullet.getPositionX(), bullet.getPositionY());
+		}
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("skill1_burst",150,140);
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.drawString("use : burst1 button + burst2 button",150,160);
+		backBufferGraphics.drawString("Fire three bullets at once",150,180);
+		//SKILL2_REROAD
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.drawRect(60,210,70,70);
+		backBufferGraphics.setColor(Color.white);
+		backBufferGraphics.drawString("BUL: 0/10", 70, 245);
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("skill2_reload",150,230);
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.drawString("use : reload button",150,250);
+		backBufferGraphics.drawString("Reload 10 bullets",150,270);
+		backBufferGraphics.setColor(Color.red);
+		backBufferGraphics.drawString("*You can only reload it up to 5 times",150,290);
+		//SKILL3_BOOST
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.drawRect(60,300,70,70);
+		Ship ship = new Ship(0, 0, Color.green, SpriteType.Ship, false);
+		for(int i=0; i<2; i++){
+			backBufferGraphics.drawLine(70, 333+8*i, 80, 333+8*i);
+		}
+		drawEntity(ship, 90, 325);
+		backBufferGraphics.setColor(Color.white);
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("skill3_boost",150,320);
+		backBufferGraphics.setColor(Color.gray);
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.drawString("use : boost button",150,340);
+		backBufferGraphics.drawString("Movement speed is briefly increased",150,360);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawCenteredRegularString(screen, "return menu : ESC", 450);
 	}
 
 	public void drawOneFifthRegularString(final Screen screen,
