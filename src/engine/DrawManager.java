@@ -1117,6 +1117,14 @@ public final class DrawManager {
 		drawLeftsideRegularString(screen, skillModeOff,
 				screen.getHeight()*4 / 12);
 
+		backBufferGraphics.setColor(Color.GRAY);
+		drawRightsideRegularString(screen, skillModeOn,
+				screen.getHeight()*4 / 6);
+
+		backBufferGraphics.setColor(Color.GRAY);
+		drawRightsideRegularString(screen, skillModeOff,
+				screen.getHeight()*4 / 12);
+
 	}
 
 	/**
@@ -1168,7 +1176,22 @@ public final class DrawManager {
 	public void drawHighScores_2p(final Screen screen,
 								  final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
-		int i = 0;
+		int i = 1;
+		String scoreString = "";
+
+		for (Score score : highScores) {
+			scoreString = String.format("%s        %04d", score.getName(),
+					score.getScore());
+			drawRightsideRegularString(screen, scoreString, screen.getHeight()
+					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+			i++;
+		}
+	}
+
+	public void drawHighScores_2p_skill(final Screen screen,
+										final List<Score> highScores) {
+		backBufferGraphics.setColor(Color.WHITE);
+		int i = 5;
 		String scoreString = "";
 
 		for (Score score : highScores) {

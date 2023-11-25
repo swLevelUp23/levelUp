@@ -292,6 +292,8 @@ public final class FileManager {
                 scoresPath += "scores_1p & skill mode";
             else if (gameMode == 1 && !skillMode)
                 scoresPath += "scores_1p & non-skill mode";
+            else if (gameMode == 2 && skillMode)
+                scoresPath += "scores_2p & skill mode";
             else
                 scoresPath += "scores_2p & non-skill mode";
 
@@ -347,6 +349,8 @@ public final class FileManager {
                 scoresPath += "scores_1p & skill mode";
             else if (gameMode == 1 && !skillMode)
                 scoresPath += "scores_1p & non-skill mode";
+            else if (gameMode == 2 && skillMode)
+                scoresPath += "scores_2p & skill mode";
             else
                 scoresPath += "scores_2p & non-skill mode";
 
