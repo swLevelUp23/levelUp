@@ -324,6 +324,7 @@ public final class Core {
 						+ " help screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing SkinSelection screen.");
+				break;
 			default:
 				break;
 			}
