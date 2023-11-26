@@ -1111,27 +1111,27 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.WHITE);
 		drawLeftsideRegularString(screen, gameMode_1,
 				screen.getHeight()*4 / 15);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.WHITE);
 		drawRightsideRegularString(screen, gameMode_2,
 				screen.getHeight()*4 / 15);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.GREEN);
 		drawLeftsideRegularString(screen, skillModeOn,
 				screen.getHeight()*4 / 6);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.GREEN);
 		drawLeftsideRegularString(screen, skillModeOff,
 				screen.getHeight()*4 / 12);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.GREEN);
 		drawRightsideRegularString(screen, skillModeOn,
 				screen.getHeight()*4 / 6);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.GREEN);
 		drawRightsideRegularString(screen, skillModeOff,
 				screen.getHeight()*4 / 12);
 
