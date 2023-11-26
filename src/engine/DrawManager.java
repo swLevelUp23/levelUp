@@ -1152,6 +1152,8 @@ public final class DrawManager {
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 3)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawLeftsideRegularString(screen, scoreString, screen.getHeight()
@@ -1167,6 +1169,8 @@ public final class DrawManager {
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 7)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawLeftsideRegularString(screen, scoreString, screen.getHeight()
@@ -1190,6 +1194,8 @@ public final class DrawManager {
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 3)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawRightsideRegularString(screen, scoreString, screen.getHeight()
@@ -1205,6 +1211,8 @@ public final class DrawManager {
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 7)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawRightsideRegularString(screen, scoreString, screen.getHeight()
