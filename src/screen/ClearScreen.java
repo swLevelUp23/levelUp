@@ -49,10 +49,10 @@ public class ClearScreen extends Screen {
 
         try {
             if (this.gameState.getMode() == 1) {
-                List<Score> highScores = Core.getFileManager().loadHighScores(1);
+                List<Score> highScores = Core.getFileManager().loadHighScores(1, SelectScreen.skillModeOn);
                 this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
             } else {
-                List<Score> highScores = Core.getFileManager().loadHighScores(2);
+                List<Score> highScores = Core.getFileManager().loadHighScores(2, SelectScreen.skillModeOn);
                 this.highScore = highScores.stream().mapToInt(Score::getScore).max().orElseThrow(NoSuchElementException::new);
             }
         } catch (NumberFormatException | NoSuchElementException | IOException e) {

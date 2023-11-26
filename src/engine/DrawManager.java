@@ -1100,6 +1100,8 @@ public final class DrawManager {
 		String instructionsString = "Press Space to return";
 		String gameMode_1 = "1P_Mode";
 		String gameMode_2 = "2P_Mode";
+		String skillModeOn = "skill";
+		String skillModeOff = "non-skill";
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, highScoreString, screen.getHeight() / 8);
@@ -1109,13 +1111,30 @@ public final class DrawManager {
 		drawCenteredRegularString(screen, instructionsString,
 				screen.getHeight() / 5);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.WHITE);
 		drawLeftsideRegularString(screen, gameMode_1,
 				screen.getHeight()*4 / 15);
 
-		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.setColor(Color.WHITE);
 		drawRightsideRegularString(screen, gameMode_2,
 				screen.getHeight()*4 / 15);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawLeftsideRegularString(screen, skillModeOn,
+				screen.getHeight()*4 / 6);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawLeftsideRegularString(screen, skillModeOff,
+				screen.getHeight()*4 / 12);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawRightsideRegularString(screen, skillModeOn,
+				screen.getHeight()*4 / 6);
+
+		backBufferGraphics.setColor(Color.GREEN);
+		drawRightsideRegularString(screen, skillModeOff,
+				screen.getHeight()*4 / 12);
+
 	}
 
 	/**
@@ -1129,10 +1148,29 @@ public final class DrawManager {
 	public void drawHighScores_1p(final Screen screen,
 							   final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
-		int i = 0;
+		int i = 1;
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 3)
+				break;
+			scoreString = String.format("%s        %04d", score.getName(),
+					score.getScore());
+			drawLeftsideRegularString(screen, scoreString, screen.getHeight()
+					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+			i++;
+		}
+	}
+
+	public void drawHighScores_1p_skill(final Screen screen,
+								  final List<Score> highScores) {
+		backBufferGraphics.setColor(Color.WHITE);
+		int i = 5;
+		String scoreString = "";
+
+		for (Score score : highScores) {
+			if (i > 7)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawLeftsideRegularString(screen, scoreString, screen.getHeight()
@@ -1152,10 +1190,29 @@ public final class DrawManager {
 	public void drawHighScores_2p(final Screen screen,
 								  final List<Score> highScores) {
 		backBufferGraphics.setColor(Color.WHITE);
-		int i = 0;
+		int i = 1;
 		String scoreString = "";
 
 		for (Score score : highScores) {
+			if (i > 3)
+				break;
+			scoreString = String.format("%s        %04d", score.getName(),
+					score.getScore());
+			drawRightsideRegularString(screen, scoreString, screen.getHeight()
+					/ 4 + fontRegularMetrics.getHeight() * (i + 1) * 2);
+			i++;
+		}
+	}
+
+	public void drawHighScores_2p_skill(final Screen screen,
+										final List<Score> highScores) {
+		backBufferGraphics.setColor(Color.WHITE);
+		int i = 5;
+		String scoreString = "";
+
+		for (Score score : highScores) {
+			if (i > 7)
+				break;
 			scoreString = String.format("%s        %04d", score.getName(),
 					score.getScore());
 			drawRightsideRegularString(screen, scoreString, screen.getHeight()
