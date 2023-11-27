@@ -1402,6 +1402,54 @@ public final class DrawManager {
 				break;
 
 			case 2:
+				// 1_subplane
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 110, 70, 70);
+				Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
+				drawEntity(SubPlaneItem, 91, 141);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("SubPlane", 150, 130);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Two auxiliary planes are created", 150, 155);
+				backBufferGraphics.drawString("on both sides of the ship for 10 sec", 150, 175);
+				// 2_SpeedUp
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 195, 70, 70);
+				Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
+				drawEntity(invincibleItem, 91, 226);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("SpeedUp", 150, 215);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Movement speed increases", 150, 240);
+				backBufferGraphics.drawString("by 1.5 times for 10 sec", 150, 260);
+				// 3_invincible
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 280, 70, 70);
+				Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+				drawEntity(SpeedUpItem, 91, 311);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("Invincible", 150, 300);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("The ship becomes", 150, 325);
+				backBufferGraphics.drawString("invincible for 10 sec", 150, 345);
+				// 4_bomb
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 365, 70, 70);
+				Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
+				drawEntity(bombItem, 91, 396);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("Bomb", 150, 385);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Defeat enemies located 3x3", 150, 410);
+				backBufferGraphics.drawString("around the treated enemies", 150, 430);
 				break;
 		}
 		backBufferGraphics.setColor(Color.GRAY);
