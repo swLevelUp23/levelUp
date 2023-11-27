@@ -260,7 +260,13 @@ public class GameScreen extends Screen {
 		this.bullet_count2=0;
 
 		// Adjust bullet shooting interval and speed by level.
-		if (this.level==1) {
+		if(this.level==0){
+			this.ship.setOriginalSpeed(5);
+			if(gameState.getMode()==2){
+				this.ship2.setOriginalSpeed(5);
+			}
+		}
+		else if (this.level==1) {
 			this.ship.setOriginalSpeed(4);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(4);

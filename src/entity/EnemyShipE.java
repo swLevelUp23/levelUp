@@ -17,8 +17,8 @@ public class EnemyShipE extends EnemyShip {
     /** 제거시 올라가는 점수 */
     private final int POINT = 20;
     public EnemyShipE(final int positionX, final int positionY,
-                      final DrawManager.SpriteType spriteType, final GameState gameState) {
-        super(positionX, positionY, spriteType, gameState);
+                      final DrawManager.SpriteType spriteType, final GameState gameState, final boolean itemPro) {
+        super(positionX, positionY, spriteType, gameState, itemPro);
         super.HP = (int)(super.HP * HPPOWER);
         super.pointValue = POINT;
     }

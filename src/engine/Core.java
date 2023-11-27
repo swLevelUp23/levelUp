@@ -34,28 +34,30 @@ public final class Core {
 	/** Total number of levels. */
 	private static final int NUM_LEVELS = 7;
 
+	/** Difficulty settings for intro stage. */
+	private static final GameSettings SETTINGS_LEVEL_0 =
+			new GameSettings(1, 4, 70, 2000, 5.5, true);
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
-			new GameSettings(5, 4, 60, 2000, 5.5);
+			new GameSettings(5, 4, 60, 2000, 5.5, false);
 	/** Difficulty settings for level 2. */
 	private static final GameSettings SETTINGS_LEVEL_2 =
-			new GameSettings(5, 5, 50, 2500, 5.5);
+			new GameSettings(5, 5, 50, 2500, 5.5, false);
 	/** Difficulty settings for level 3. */
 	private static final GameSettings SETTINGS_LEVEL_3 =
-			new GameSettings(6, 5, 40, 1500, 5.5);
+			new GameSettings(6, 5, 40, 1500, 5.5, false);
 	/** Difficulty settings for level 4. */
 	private static final GameSettings SETTINGS_LEVEL_4 =
-			new GameSettings(6, 6, 30, 1500, 5);
+			new GameSettings(6, 6, 30, 1500, 5, false);
 	/** Difficulty settings for level 5. */
 	private static final GameSettings SETTINGS_LEVEL_5 =
-			new GameSettings(7, 6, 20, 1000,5);
+			new GameSettings(7, 6, 20, 1000,5, false);
 	/** Difficulty settings for level 6. */
 	private static final GameSettings SETTINGS_LEVEL_6 =
-			new GameSettings(7, 7, 10, 1000,4.8);
+			new GameSettings(7, 7, 10, 1000,4.8, false);
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
-			new GameSettings(8, 7, 2, 500,4.8);
-	private static int LEVEL;
+			new GameSettings(8, 7, 2, 500,4.8, false);
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -131,6 +133,7 @@ public final class Core {
 		int height = frame.getHeight();
 
 		gameSettings = new ArrayList<GameSettings>();
+		gameSettings.add(SETTINGS_LEVEL_0);
 		gameSettings.add(SETTINGS_LEVEL_1);
 		gameSettings.add(SETTINGS_LEVEL_2);
 		gameSettings.add(SETTINGS_LEVEL_3);
@@ -147,8 +150,8 @@ public final class Core {
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
-			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(0, 0, MAX_LIVES, 0, 0);
+			else gameState = new GameState(0, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
 			case 0:
@@ -187,7 +190,7 @@ public final class Core {
 					}
 
 					currentScreen = new GameScreen(gameState,
-							gameSettings.get(gameState.getLevel() - 1),
+							gameSettings.get(gameState.getLevel()),
 							bonusLife, width, height, FPS);
 
 					SoundManager.resetBGM();

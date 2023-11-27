@@ -56,13 +56,14 @@ public class EnemyShip extends Entity {
 	 *            Sprite type, image corresponding to the ship.
 	 */
 	public EnemyShip(final int positionX, final int positionY,
-					 final SpriteType spriteType, final GameState gameState) {
+					 final SpriteType spriteType, final GameState gameState, final boolean itemPro) {
 		super(positionX, positionY, 12 * 2, 8 * 2, Color.WHITE);
 		this.gameState = gameState;
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
-		this.itemRange =  new Random().nextInt(RANDOM_BOUND);
+		if(itemPro) this.itemRange = 1;
+		else this.itemRange = new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);
 		this.HP = this.gameState.getLevel();
 	}

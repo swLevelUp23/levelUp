@@ -18,6 +18,10 @@ public class GameSettings {
 	private int shootingFrecuency;
 	/** Speed of item dropping. */
 	private double itemSpeed;
+	/** 아이템의 발생 빈도
+	 * 레벨 0에서는 무조건 발생하도록 true
+	 * 나머지 레벨에서는 랜덤으로 발생하도록 false */
+	private boolean itemPro;
 	/**
 	 * Constructor.
 	 * 
@@ -31,12 +35,13 @@ public class GameSettings {
 	 *            Frecuency of enemy shootings, +/- 30%.
 	 */
 	public GameSettings(final int formationWidth, final int formationHeight,
-			final int baseSpeed, final int shootingFrecuency, final double itemSpeed) {
+			final int baseSpeed, final int shootingFrecuency, final double itemSpeed, final boolean itemPro) {
 		this.formationWidth = formationWidth;
 		this.formationHeight = formationHeight;
 		this.baseSpeed = baseSpeed;
 		this.shootingFrecuency = shootingFrecuency;
 		this.itemSpeed = itemSpeed;
+		this.itemPro = itemPro;
 	}
 
 	/**
@@ -69,5 +74,6 @@ public class GameSettings {
 
 	/** 폭탄 투하 빈도 */
 	public final int getDropFrecuency() { return shootingFrecuency + 1000; }
+	public final boolean getItemPro() { return itemPro; }
 
 }
