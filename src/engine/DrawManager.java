@@ -1349,54 +1349,64 @@ public final class DrawManager {
 
 	}
 
-	public void drawHelpScreen(final Screen screen){
+	public void drawHelpScreen(final Screen screen, final int page){
 		backBufferGraphics.setColor(Color.green);
-		drawCenteredBigString(screen, "help", 80);
+		drawCenteredBigString(screen, "help", 65);
+		backBufferGraphics.setColor(Color.gray);
+		if (page == 1) drawCenteredRegularString(screen, "< SKILL >", 90);
+		else drawCenteredRegularString(screen, "< ITEM >", 90);
 
-		//SKILL1_BURST
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,120,70,70);
-		for(int i=0; i<3; i++){
-			Bullet bullet = new Bullet(80+10*i, 150, -10, 0);
-			drawEntity(bullet, bullet.getPositionX(), bullet.getPositionY());
-		}
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill1_burst",150,140);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : burst1 button + burst2 button",150,160);
-		backBufferGraphics.drawString("Fire three bullets at once",150,180);
-		//SKILL2_REROAD
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,210,70,70);
-		backBufferGraphics.setColor(Color.white);
-		backBufferGraphics.drawString("BUL: 0/10", 70, 245);
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill2_reload",150,230);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : reload button",150,250);
-		backBufferGraphics.drawString("Reload 10 bullets",150,270);
-		backBufferGraphics.setColor(Color.red);
-		backBufferGraphics.drawString("*You can only reload it up to 5 times",150,290);
-		//SKILL3_BOOST
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,300,70,70);
-		Ship ship = new Ship(0, 0, Color.green, SpriteType.Ship, false);
-		for(int i=0; i<2; i++){
-			backBufferGraphics.drawLine(70, 333+8*i, 80, 333+8*i);
-		}
-		drawEntity(ship, 90, 325);
-		backBufferGraphics.setColor(Color.white);
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill3_boost",150,320);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : boost button",150,340);
-		backBufferGraphics.drawString("Movement speed is briefly increased",150,360);
+		switch (page) {
+			case 1:
+				//SKILL1_BURST
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 120, 70, 70);
+				for (int i = 0; i < 3; i++) {
+					Bullet bullet = new Bullet(80 + 10 * i, 150, -10, 0);
+					drawEntity(bullet, bullet.getPositionX(), bullet.getPositionY());
+				}
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("burst", 150, 140);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : burst1 button + burst2 button", 150, 165);
+				backBufferGraphics.drawString("Fire three bullets at once", 150, 185);
+				//SKILL2_REROAD
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 210, 70, 70);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("BUL: 0/10", 70, 245);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("reload", 150, 230);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : reload button", 150, 250);
+				backBufferGraphics.drawString("Reload 10 bullets", 150, 270);
+				backBufferGraphics.setColor(Color.red);
+				backBufferGraphics.drawString("*You can only reload it up to 5 times", 150, 290);
+				//SKILL3_BOOST
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 300, 70, 70);
+				Ship ship = new Ship(0, 0, Color.green, SpriteType.Ship, false);
+				for (int i = 0; i < 2; i++) {
+					backBufferGraphics.drawLine(70, 333 + 8 * i, 80, 333 + 8 * i);
+				}
+				drawEntity(ship, 90, 325);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("boost", 150, 320);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : boost button", 150, 345);
+				backBufferGraphics.drawString("Movement speed is briefly increased", 150, 365);
+				break;
 
+			case 2:
+				break;
+		}
 		backBufferGraphics.setColor(Color.GRAY);
-		drawCenteredRegularString(screen, "return menu : ESC", 450);
+		drawCenteredRegularString(screen, "return menu : ESC", 475);
+		drawCenteredRegularString(screen, "- "+page+" -", 500);
 	}
 
 	public void drawOneFifthRegularString(final Screen screen,
