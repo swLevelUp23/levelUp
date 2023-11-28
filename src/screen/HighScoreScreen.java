@@ -20,6 +20,8 @@ public class HighScoreScreen extends Screen {
 	private List<Score> highScores_1p;
 	/** List of past high scores from 2p mode. */
 	private List<Score> highScores_2p;
+	private List<Score> highScores_1p_skill;
+	private List<Score> highScores_2p_skill;
 
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -37,8 +39,10 @@ public class HighScoreScreen extends Screen {
 		this.returnCode = 1;
 
 		try {
-			this.highScores_1p = Core.getFileManager().loadHighScores(1);
-			this.highScores_2p = Core.getFileManager().loadHighScores(2);
+			this.highScores_1p = Core.getFileManager().loadHighScores(1, false);
+			this.highScores_1p_skill = Core.getFileManager().loadHighScores(1, true);
+			this.highScores_2p = Core.getFileManager().loadHighScores(2, false);
+			this.highScores_2p_skill = Core.getFileManager().loadHighScores(2, true);
 		} catch (NumberFormatException | IOException e) {
 			logger.warning("Couldn't load high scores!");
 		}
@@ -77,6 +81,8 @@ public class HighScoreScreen extends Screen {
 		drawManager.drawHighScoreMenu(this);
 		drawManager.drawHighScores_1p(this, this.highScores_1p);
 		drawManager.drawHighScores_2p(this, this.highScores_2p);
+		drawManager.drawHighScores_1p_skill(this, this.highScores_1p_skill);
+		drawManager.drawHighScores_2p_skill(this, this.highScores_2p_skill);
 
 		drawManager.completeDrawing(this);
 	}
