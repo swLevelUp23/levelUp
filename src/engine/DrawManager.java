@@ -1411,7 +1411,7 @@ public final class DrawManager {
 
 	}
 
-	public void drawLevel0Dir(final Screen screen, Color color){
+	public void drawLevel0(final Screen screen, Color color){
 		backBufferGraphics.setColor(color);
 		int y1 = screen.getHeight() / 5 * 3 + 50;
 		int y2 = y1+50;
@@ -1421,10 +1421,14 @@ public final class DrawManager {
 		int x3 = x2+50;
 
 		String[] keyValue = Core.getKeySettingStringArray();
-		// "left", "right", "attack"
+		// "left", "right", "attack", "item"
 		backBufferGraphics.drawString(keyValue[0], x1-fontRegularMetrics.stringWidth(keyValue[0])/2+25, y2+30);
 		backBufferGraphics.drawString(keyValue[1], x3-fontRegularMetrics.stringWidth(keyValue[1])/2+25, y2+30);
 		backBufferGraphics.drawString(keyValue[2], x2-fontRegularMetrics.stringWidth(keyValue[2])/2+25, y2-20);
+		backBufferGraphics.setColor(Color.YELLOW);
+		backBufferGraphics.drawString(keyValue[7], x2+20, y2+120);
+		backBufferGraphics.drawString("Use item:", x1-20, y2+120);
+
 	}
 
 	public void drawHelpScreen(final Screen screen){

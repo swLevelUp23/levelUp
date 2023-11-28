@@ -62,7 +62,8 @@ public class EnemyShip extends Entity {
 		this.spriteType = spriteType;
 		this.animationCooldown = Core.getCooldown(500);
 		this.isDestroyed = false;
-		this.itemRange = new Random().nextInt(RANDOM_BOUND);
+		if(gameState.getLevel() == 0) this.itemRange = 1;
+		else this.itemRange = new Random().nextInt(RANDOM_BOUND);
 		this.hasItem = itemGenerator(itemRange);
 		this.HP = this.gameState.getLevel();
 	}

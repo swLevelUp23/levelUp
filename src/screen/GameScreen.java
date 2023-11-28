@@ -737,7 +737,7 @@ public class GameScreen extends Screen {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
 			}
 			if(level == 0){
-				drawManager.drawLevel0Dir(this, Color.GRAY);
+				drawManager.drawLevel0(this, Color.GRAY);
 				// special enemy 나타났을 때 100점 준다고 알려주기
 				// 총알 재장전 버튼 알려주기
 				// 노란색은 아이템임을 알려주기
