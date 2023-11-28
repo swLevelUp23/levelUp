@@ -736,6 +736,13 @@ public class GameScreen extends Screen {
 			if (this.lives < 1) {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
 			}
+			if(level == 0){
+				drawManager.drawLevel0Dir(this, Color.GRAY);
+				// special enemy 나타났을 때 100점 준다고 알려주기
+				// 총알 재장전 버튼 알려주기
+				// 노란색은 아이템임을 알려주기
+				// 아이템을 얻었을 때 사용 버튼 알려주기
+			}
 		} else {
 			if (this.lives > 0) {
 				drawManager.drawEntity(this.ship, this.ship.getPositionX(),
@@ -830,6 +837,9 @@ public class GameScreen extends Screen {
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
+
+
+
 
 		drawManager.completeDrawing(this);
 	}

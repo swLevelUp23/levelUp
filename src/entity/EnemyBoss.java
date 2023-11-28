@@ -18,8 +18,8 @@ public class EnemyBoss extends EnemyShip {
     private final int POINT = 500;
 
     public EnemyBoss(final int positionX, final int positionY,
-                     final DrawManager.SpriteType spriteType, final GameState gameState, final boolean itemPro) {
-        super(positionX, positionY, spriteType, gameState, itemPro);
+                     final DrawManager.SpriteType spriteType, final GameState gameState) {
+        super(positionX, positionY, spriteType, gameState);
         super.HP = (int)(super.HP * HPPOWER);
         fullHP = super.HP;
         super.spriteType = spriteType.Boss;

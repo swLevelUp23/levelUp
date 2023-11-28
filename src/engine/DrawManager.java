@@ -474,6 +474,11 @@ public final class DrawManager {
 				positionY + 1);
 	}
 
+	public void drawLine(final Screen screen, final int x1, final int y1, final int x2, final int y2, Color color){
+		backBufferGraphics.setColor(color);
+		backBufferGraphics.drawLine(x1, y1, x2, y2);
+	}
+
 	/**
 	 * Draws game title.x
 	 *
@@ -1404,6 +1409,22 @@ public final class DrawManager {
 		}
 
 
+	}
+
+	public void drawLevel0Dir(final Screen screen, Color color){
+		backBufferGraphics.setColor(color);
+		int y1 = screen.getHeight() / 5 * 3 + 50;
+		int y2 = y1+50;
+		int y3 = y2+50;
+		int x1 = screen.getWidth() / 2 + 50;
+		int x2 = x1+50;
+		int x3 = x2+50;
+
+		String[] keyValue = Core.getKeySettingStringArray();
+		// "left", "right", "attack"
+		backBufferGraphics.drawString(keyValue[0], x1-fontRegularMetrics.stringWidth(keyValue[0])/2+25, y2+30);
+		backBufferGraphics.drawString(keyValue[1], x3-fontRegularMetrics.stringWidth(keyValue[1])/2+25, y2+30);
+		backBufferGraphics.drawString(keyValue[2], x2-fontRegularMetrics.stringWidth(keyValue[2])/2+25, y2-20);
 	}
 
 	public void drawHelpScreen(final Screen screen){

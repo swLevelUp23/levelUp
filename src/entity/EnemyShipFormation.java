@@ -111,8 +111,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int checkFirst = 1;
 	/** store special enemy ship's index */
 	private List<Integer> special_enemy;
-	/** 아이템 생성 확률: true면 적 하나당 아이템 한개 발생, false면 랜덤 발생 */
-	private boolean itemPro;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -155,7 +153,6 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.shooters = new ArrayList<EnemyShip>();
 		this.setXpos = INIT_POS_X;
 		this.special_enemy = new ArrayList<Integer>();
-		this.itemPro = gameSettings.getItemPro();
 		SpriteType spriteType;
 
 		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
@@ -215,43 +212,37 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						enemyShip = new EnemyShipA((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipB1:
 						enemyShip = new EnemyShipB((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipC1:
 						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipD1:
 						enemyShip = new EnemyShipD((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 						break;
 					case EnemyShipE:
 						enemyShip = new EnemyShipE((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState,
-								itemPro);
+								+ positionY, spriteType,gameState);
 				}
 				column.add(enemyShip);
 				this.shipCount++;
