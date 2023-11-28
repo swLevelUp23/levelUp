@@ -721,7 +721,6 @@ public class GameScreen extends Screen {
 
 		if (SelectScreen.skillModeOn) {
 			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
-
 			if (this.gameState.getMode() == 2) {
 				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
 			}
@@ -736,12 +735,9 @@ public class GameScreen extends Screen {
 			if (this.lives < 1) {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
 			}
+			// level0은 mode1일 때만 생성
 			if(level == 0){
-				drawManager.drawLevel0(this, Color.GRAY);
-				// special enemy 나타났을 때 100점 준다고 알려주기
-				// 총알 재장전 버튼 알려주기
-				// 노란색은 아이템임을 알려주기
-				// 아이템을 얻었을 때 사용 버튼 알려주기
+				drawManager.drawLevel0(this, Color.GRAY, SelectScreen.skillModeOn);
 			}
 		} else {
 			if (this.lives > 0) {
@@ -790,7 +786,6 @@ public class GameScreen extends Screen {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
 		}
-
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawItems(this, this.ship.getItemQueue().getItemQue(), this.ship.getItemQueue().getSize());
