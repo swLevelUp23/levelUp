@@ -30,9 +30,9 @@ public class HelpScreen extends Screen{
             this.returnCode = 1;
             this.isRunning = false;
         }
-        else if (inputManager.isKeyDown(KeyEvent.VK_1) && this.inputDelay.checkFinished())
+        else if (inputManager.isKeyDown(KeyEvent.VK_LEFT) && this.inputDelay.checkFinished())
             page = 1;
-        else if(inputManager.isKeyDown(KeyEvent.VK_2) && this.inputDelay.checkFinished())
+        else if(inputManager.isKeyDown(KeyEvent.VK_RIGHT) && this.inputDelay.checkFinished())
             page = 2;
 
         draw();

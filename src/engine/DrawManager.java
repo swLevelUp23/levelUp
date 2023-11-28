@@ -1454,7 +1454,7 @@ public final class DrawManager {
 		}
 		backBufferGraphics.setColor(Color.GRAY);
 		drawCenteredRegularString(screen, "return menu : ESC", 475);
-		drawCenteredRegularString(screen, "- "+page+" -", 500);
+		drawCenteredRegularString(screen, "[ "+page+" / 2 ]", 500);
 	}
 
 	public void drawOneFifthRegularString(final Screen screen,
