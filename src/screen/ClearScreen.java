@@ -4,6 +4,7 @@ import engine.Cooldown;
 import engine.Core;
 import engine.GameState;
 import engine.Score;
+import entity.EnemyGraphics;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ public class ClearScreen extends Screen {
     private static final int SEPARATION_LINE_HEIGHT = 40;
 
     private GameState gameState;
+    private EnemyGraphics enemyGraphics;
 
     /** Current game level. */
     private int level;
@@ -89,6 +91,9 @@ public class ClearScreen extends Screen {
                 Thread.sleep(500);
             } catch (InterruptedException e) { }
         }
+        if(true){
+                drawManager.dummyShip.update();
+        }
         if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
             this.isRunning = false;
     }
@@ -115,7 +120,7 @@ public class ClearScreen extends Screen {
         drawManager.drawHighScore(this, this.highScore);
         drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1, Color.GREEN);
 
-        drawManager.drawClear(this, this.returnCode, this.level);
+        drawManager.drawClear(this, this.returnCode, this.level, gameState.getMode(), gameState.skillMode);
 
         drawManager.completeDrawing(this);
     }

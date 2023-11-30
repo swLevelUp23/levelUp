@@ -60,6 +60,9 @@ public final class DrawManager {
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
 
+	/** Cooldown between sprite changes. */
+	protected Cooldown animationCooldown;
+
 	/** Sprite types. */
 	public static enum SpriteType {
 		/** Player1 ship. */
@@ -249,6 +252,19 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
+
+	public void drawEntity(final EnemyGraphics enemyGraphics, final int positionX,
+						   final int positionY, Color color) {
+		boolean[][] image = spriteMap.get(enemyGraphics.getSpriteType());
+
+		backBufferGraphics.setColor(color);
+		for (int i = 0; i < image.length; i++)
+			for (int j = 0; j < image[i].length; j++)
+				if (image[i][j])
+					backBufferGraphics.drawRect(positionX + i * 2, positionY
+							+ j * 2, 1, 1);
+	}
+
 	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
 		boolean[][] image = spriteMap.get(entity.getSpriteType());
 
@@ -1327,11 +1343,25 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawClear(final Screen screen, final int option, final int level) {
-		String titleString = "LEVEL  " + level + "  Clear";
+	public EnemyGraphics dummyShip = new EnemyGraphics(SpriteType.EnemyShipA1);
+	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
 
+		String modeString = mode + " PLAYER MODE";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, modeString, screen.getHeight() / 3);
+
+		String titleString = "LEVEL  " + level + "  Clear";
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
+
+		String skillString;
+		if (skill)
+			skillString = "SKILL MODE ON";
+		else
+			skillString = "SKILL MODE OFF";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, skillString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 4);
+
 
 		String continueString = "Continue";
 		String exitString = "Exit";
@@ -1349,6 +1379,13 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString,
 				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
+
+		drawEntity(dummyShip, 350, 130, Color.white);
+		drawEntity(dummyShip, 270, 250, Color.white);
+		drawEntity(dummyShip, 170, 120, Color.gray);
+		drawEntity(dummyShip, 110, 280, Color.gray);
+		drawEntity(dummyShip, 110, 150, Color.gray);
+		drawEntity(dummyShip, 130, 250, Color.yellow);
 	}
 
 	public void drawWindow(final Screen screen, int x, int y, int w){
