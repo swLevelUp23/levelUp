@@ -55,6 +55,8 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8);
+	private static final GameSettings SETTINGS_BOSS =
+			new GameSettings(1, 1, 3, 500,4.8,true);
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
@@ -138,6 +140,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
+		gameSettings.add(SETTINGS_BOSS);
+
 
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 

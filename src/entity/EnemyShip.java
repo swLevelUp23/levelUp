@@ -126,7 +126,7 @@ public class EnemyShip extends Entity {
 	 */
 	public final void destroy() {
 		this.HP--;
-		if (this.HP <= 0) {
+		if (this.HP <= 0 || this.getSpriteType()==SpriteType.Boss) {
 			SoundManager.playSound("SFX/S_Enemy_Destroy_a", "Enemy_destroyed", false, false);
 			this.isDestroyed = true;
 			this.setColor(Color.WHITE);
