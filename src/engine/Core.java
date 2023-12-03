@@ -320,6 +320,8 @@ public final class Core {
 				break;
 			case 9:
 				// Help
+				SoundManager.stopSound("menu",1f);
+				SoundManager.playSound("BGM/B_Main_e", "help", false, true);
 				currentScreen = new HelpScreen(width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " help screen at " + FPS + " fps.");
