@@ -123,7 +123,7 @@ public final class DrawManager {
 	/**
 	 * Private constructor.
 	 */
-	private DrawManager() {
+	public DrawManager() {
 		fileManager = Core.getFileManager();
 		logger = Core.getLogger();
 		logger.info("Started loading resources.");
@@ -378,12 +378,17 @@ public final class DrawManager {
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
 
-	public void drawBossLife(final Screen screen, final int fullHp, final int hp){
-		int lives = (hp/fullHp * 100) * (frame.getWidth()-10) ;
+	public int life(final int hp){
+		double lives = (hp/10 + 0.1*(hp%10)) * (434-20) ; //frame.getWidth()=454
+		return (int)lives;
+	}
+
+	public void drawBossLife(final Screen screen, final int remainlives){
+		//System.out.println(frame.getWidth());
 		backBufferGraphics.setColor(Color.red);
-		backBufferGraphics.drawRect(5, 40 , frame.getWidth()-5, 10);
-		backBufferGraphics.fillRect(5, 40 , lives, 10);
-		backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
+		backBufferGraphics.drawRect(10, 85 , frame.getWidth()-20, 10);
+		backBufferGraphics.fillRect(10, 85 , remainlives, 10);
+		//backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
 	}
 
 	/**

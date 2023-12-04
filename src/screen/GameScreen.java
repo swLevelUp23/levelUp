@@ -122,6 +122,10 @@ public class GameScreen extends Screen {
 	/** Checks life increase item is used. **/
 	private boolean haslifeItemUsed = false;
 
+	/** Checks if this stage is boss stage. **/
+	private boolean boss;
+	private int bosslife = 10;
+
 
 
 	/**
@@ -939,7 +943,17 @@ public class GameScreen extends Screen {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
                                 }
-                            } else {
+                            }else if(enemyShip.getSpriteType() == DrawManager.SpriteType.Boss){
+								EnemyBoss enemyBoss = (EnemyBoss) enemyShip;
+								enemyBoss.reducelives();
+								bosslife = enemyBoss.remainlives();
+								System.out.println("Boss Life: " + enemyBoss.remainlives() + "/10");
+								if(enemyBoss.remainlives() <= 0){
+									this.score += enemyShip.getPointValue();
+									this.shipsDestroyed++;
+									this.enemyShipFormation.destroy(enemyShip);
+								}
+							} else {
 								if (enemyShip.getColor()==Color.WHITE || enemyShip.getColor()==Color.GREEN) {
 									this.score += enemyShip.getPointValue();
 									this.shipsDestroyed++;

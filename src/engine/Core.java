@@ -32,7 +32,7 @@ public final class Core {
 	/** Levels between extra life. */
 	private static final int EXTRA_LIFE_FRECUENCY = 3;
 	/** Total number of levels. */
-	private static final int NUM_LEVELS = 7;
+	private static final int NUM_LEVELS = 8;
 
 	/** Difficulty settings for intro stage. */
 	private static final GameSettings SETTINGS_LEVEL_0 =
@@ -58,6 +58,9 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8);
+	private static final GameSettings SETTINGS_BOSS =
+			new GameSettings(1, 1, 3, 500,4.8,true);
+	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
 	private static Frame frame;
@@ -141,6 +144,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
+		gameSettings.add(SETTINGS_BOSS);
+
 
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
