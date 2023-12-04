@@ -156,7 +156,8 @@ public final class Core {
 
 			switch (returnCode) {
 			case 0:
-				currentScreen = new LoginScreen(width, height, FPS);LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
+				currentScreen = new LoginScreen(width, height, FPS);
+				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 					+ " title screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
 				LOGGER.info("Closing title screen.");
@@ -307,7 +308,7 @@ public final class Core {
 				// Select Mode.
 				SoundManager.stopSound("menu",2f);
 				SoundManager.playSound("BGM/B_Main_c", "selection", true, true);
-				currentScreen = new SelectScreen(width, height, FPS);
+				currentScreen = new SelectScreen(width, height, FPS, gameState);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " select screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);

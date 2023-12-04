@@ -60,6 +60,9 @@ public final class DrawManager {
 	/** Sprite types mapped to their images. */
 	private static Map<SpriteType, boolean[][]> spriteMap;
 
+	/** Cooldown between sprite changes. */
+	protected Cooldown animationCooldown;
+
 	/** Sprite types. */
 	public static enum SpriteType {
 		/** Player1 ship. */
@@ -249,6 +252,19 @@ public final class DrawManager {
 					backBufferGraphics.drawRect(positionX + i * 2, positionY
 							+ j * 2, 1, 1);
 	}
+
+	public void drawEntity(final EnemyGraphics enemyGraphics, final int positionX,
+						   final int positionY, Color color) {
+		boolean[][] image = spriteMap.get(enemyGraphics.getSpriteType());
+
+		backBufferGraphics.setColor(color);
+		for (int i = 0; i < image.length; i++)
+			for (int j = 0; j < image[i].length; j++)
+				if (image[i][j])
+					backBufferGraphics.drawRect(positionX + i * 2, positionY
+							+ j * 2, 1, 1);
+	}
+
 	public void clearEntity(final Entity entity, final int positionX, final int positionY) {
 		boolean[][] image = spriteMap.get(entity.getSpriteType());
 
@@ -473,12 +489,6 @@ public final class DrawManager {
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
 	}
-
-	public void drawLine(final Screen screen, final int x1, final int y1, final int x2, final int y2, Color color){
-		backBufferGraphics.setColor(color);
-		backBufferGraphics.drawLine(x1, y1, x2, y2);
-	}
-
 	/**
 	 * Draws game title.x
 	 *
@@ -1332,11 +1342,26 @@ public final class DrawManager {
 					+ fontBigMetrics.getHeight() / 3);
 	}
 
-	public void drawClear(final Screen screen, final int option, final int level) {
+	public EnemyGraphics dummyShip = new EnemyGraphics(SpriteType.EnemyShipA1);
+	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
+
+		String modeString = mode + " PLAYER MODE";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, modeString, screen.getHeight() / 3);
+
 		String titleString = "LEVEL  " + level + "  Clear";
 
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
+
+		String skillString;
+		if (skill)
+			skillString = "SKILL MODE ON";
+		else
+			skillString = "SKILL MODE OFF";
+		backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, skillString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 4);
+
 
 		String continueString = "Continue";
 		String exitString = "Exit";
@@ -1354,6 +1379,13 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString,
 				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
+
+		drawEntity(dummyShip, 350, 130, Color.white);
+		drawEntity(dummyShip, 270, 250, Color.white);
+		drawEntity(dummyShip, 170, 120, Color.gray);
+		drawEntity(dummyShip, 110, 280, Color.gray);
+		drawEntity(dummyShip, 110, 150, Color.gray);
+		drawEntity(dummyShip, 130, 250, Color.yellow);
 	}
 
 	public void drawWindow(final Screen screen, int x, int y, int w){
@@ -1461,54 +1493,112 @@ public final class DrawManager {
 		}
 	}
 
-	public void drawHelpScreen(final Screen screen){
+	public void drawHelpScreen(final Screen screen, final int page){
 		backBufferGraphics.setColor(Color.green);
-		drawCenteredBigString(screen, "help", 80);
+		drawCenteredBigString(screen, "help", 65);
+		backBufferGraphics.setColor(Color.gray);
+		if (page == 1) drawCenteredRegularString(screen, "< SKILL >", 90);
+		else drawCenteredRegularString(screen, "< ITEM >", 90);
 
-		//SKILL1_BURST
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,120,70,70);
-		for(int i=0; i<3; i++){
-			Bullet bullet = new Bullet(80+10*i, 150, -10, 0);
-			drawEntity(bullet, bullet.getPositionX(), bullet.getPositionY());
-		}
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill1_burst",150,140);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : burst1 button + burst2 button",150,160);
-		backBufferGraphics.drawString("Fire three bullets at once",150,180);
-		//SKILL2_REROAD
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,210,70,70);
-		backBufferGraphics.setColor(Color.white);
-		backBufferGraphics.drawString("BUL: 0/10", 70, 245);
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill2_reload",150,230);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : reload button",150,250);
-		backBufferGraphics.drawString("Reload 10 bullets",150,270);
-		backBufferGraphics.setColor(Color.red);
-		backBufferGraphics.drawString("*You can only reload it up to 5 times",150,290);
-		//SKILL3_BOOST
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.drawRect(60,300,70,70);
-		Ship ship = new Ship(0, 0, Color.green, SpriteType.Ship, false);
-		for(int i=0; i<2; i++){
-			backBufferGraphics.drawLine(70, 333+8*i, 80, 333+8*i);
-		}
-		drawEntity(ship, 90, 325);
-		backBufferGraphics.setColor(Color.white);
-		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.drawString("skill3_boost",150,320);
-		backBufferGraphics.setColor(Color.gray);
-		backBufferGraphics.setFont(fontSmall);
-		backBufferGraphics.drawString("use : boost button",150,340);
-		backBufferGraphics.drawString("Movement speed is briefly increased",150,360);
+		switch (page) {
+			case 1:
+				//SKILL1_BURST
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 120, 70, 70);
+				for (int i = 0; i < 3; i++) {
+					Bullet bullet = new Bullet(80 + 10 * i, 150, -10, 0);
+					drawEntity(bullet, bullet.getPositionX(), bullet.getPositionY());
+				}
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("burst", 150, 140);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : burst1 button + burst2 button", 150, 165);
+				backBufferGraphics.drawString("Fire three bullets at once", 150, 185);
+				//SKILL2_REROAD
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 210, 70, 70);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("BUL: 0/10", 70, 245);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("reload", 150, 230);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : reload button", 150, 250);
+				backBufferGraphics.drawString("Reload 10 bullets", 150, 270);
+				backBufferGraphics.setColor(Color.red);
+				backBufferGraphics.drawString("*You can only reload it up to 5 times", 150, 290);
+				//SKILL3_BOOST
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 300, 70, 70);
+				Ship ship = new Ship(0, 0, Color.green, SpriteType.Ship, false);
+				for (int i = 0; i < 2; i++) {
+					backBufferGraphics.drawLine(70, 333 + 8 * i, 80, 333 + 8 * i);
+				}
+				drawEntity(ship, 90, 325);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("boost", 150, 320);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("use : boost button", 150, 345);
+				backBufferGraphics.drawString("Movement speed is briefly increased", 150, 365);
+				break;
 
+			case 2:
+				// 1_subplane
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 110, 70, 70);
+				Ship SubPlaneItem = new Ship(0, 0, Color.green, SpriteType.AuxiliaryShape, false);
+				drawEntity(SubPlaneItem, 91, 141);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.drawString("SubPlane", 150, 130);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Two auxiliary planes are created", 150, 155);
+				backBufferGraphics.drawString("on both sides of the ship for 10 sec", 150, 175);
+				// 2_SpeedUp
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 195, 70, 70);
+				Ship invincibleItem = new Ship(0, 0, Color.yellow, SpriteType.InvincibleShape, false);
+				drawEntity(invincibleItem, 91, 226);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("SpeedUp", 150, 215);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Movement speed increases", 150, 240);
+				backBufferGraphics.drawString("by 1.5 times for 10 sec", 150, 260);
+				// 3_invincible
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 280, 70, 70);
+				Ship SpeedUpItem = new Ship(0, 0, Color.orange, SpriteType.SpeedUpShape, false);
+				drawEntity(SpeedUpItem, 91, 311);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("Invincible", 150, 300);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("The ship becomes", 150, 325);
+				backBufferGraphics.drawString("invincible for 10 sec", 150, 345);
+				// 4_bomb
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.drawRect(60, 365, 70, 70);
+				Ship bombItem = new Ship(0, 0, Color.red, SpriteType.BombShape_small, false);
+				drawEntity(bombItem, 91, 396);
+				backBufferGraphics.setFont(fontRegular);
+				backBufferGraphics.setColor(Color.white);
+				backBufferGraphics.drawString("Bomb", 150, 385);
+				backBufferGraphics.setColor(Color.gray);
+				backBufferGraphics.setFont(fontSmall);
+				backBufferGraphics.drawString("Defeat enemies located 3x3", 150, 410);
+				backBufferGraphics.drawString("around the treated enemies", 150, 430);
+				break;
+		}
 		backBufferGraphics.setColor(Color.GRAY);
-		drawCenteredRegularString(screen, "return menu : ESC", 450);
+		drawCenteredRegularString(screen, "return menu : ESC", 475);
+		drawCenteredRegularString(screen, "[ "+page+" / 2 ]", 500);
 	}
 
 	public void drawOneFifthRegularString(final Screen screen,
