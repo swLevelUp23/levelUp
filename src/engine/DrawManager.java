@@ -529,6 +529,7 @@ public final class DrawManager {
 		String exitString = "exit";
 		String achievementString = "Achievements";
 		String helpString = "Help";
+		String TutorialString = "Tutorial";
 
 		if (option == 2)
 			backBufferGraphics.setColor(Color.GREEN);
@@ -568,12 +569,18 @@ public final class DrawManager {
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, helpString, screen.getHeight() / 3
 				* 2 + fontRegularMetrics.getHeight() * 7-fontRegularMetrics.getHeight()*2);
+		if (option == 10)
+			backBufferGraphics.setColor(Color.GREEN);
+		else
+			backBufferGraphics.setColor(Color.WHITE);
+		drawCenteredRegularString(screen, TutorialString, screen.getHeight() / 3
+				* 2 + fontRegularMetrics.getHeight() * 9-fontRegularMetrics.getHeight()*2);
 		if (option == 0)
 			backBufferGraphics.setColor(Color.GREEN);
 		else
 			backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, exitString, screen.getHeight() / 3
-				* 2 + fontRegularMetrics.getHeight() * 9-fontRegularMetrics.getHeight()*2);
+				* 2 + fontRegularMetrics.getHeight() * 11-fontRegularMetrics.getHeight()*2);
 	}
 
 	/**

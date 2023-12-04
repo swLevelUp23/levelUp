@@ -333,10 +333,15 @@ public final class Core {
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " help screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info("Closing SkinSelection screen.");
+				LOGGER.info("Closing Help screen.");
+				break;
+			case 10:
+				// Tutorial(level 0)
+				returnCode = 1;
 				break;
 			default:
 				break;
+
 			}
 
 		} while (returnCode != 0);
