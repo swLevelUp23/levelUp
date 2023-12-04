@@ -1344,7 +1344,7 @@ public final class DrawManager {
 	}
 
 	public EnemyGraphics dummyShip = new EnemyGraphics(SpriteType.EnemyShipA1);
-	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
+	public void drawClear(final Screen screen, final int option, final int level, final int mode) {
 
 		String modeString = mode + " PLAYER MODE";
 		backBufferGraphics.setColor(Color.WHITE);
@@ -1355,7 +1355,7 @@ public final class DrawManager {
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
 
 		String skillString;
-		if (skill)
+		if (SelectScreen.skillModeOn)
 			skillString = "SKILL MODE ON";
 		else
 			skillString = "SKILL MODE OFF";
