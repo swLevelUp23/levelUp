@@ -131,54 +131,54 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 *            Current game settings.
 	 */
 	public EnemyShipFormation(final GameSettings gameSettings, final GameState gameState) {
+		this.gameState = gameState;
+		this.drawManager = Core.getDrawManager();
+		this.logger = Core.getLogger();
+		this.enemyShips = new ArrayList<List<EnemyShip>>();
+		this.currentDirection = Direction.RIGHT;
+		this.movementInterval = 0;
+		this.nShipsWide = gameSettings.getFormationWidth();
+		this.nShipsHigh = gameSettings.getFormationHeight();
+		this.shootingInterval = gameSettings.getShootingFrecuency();
+		this.shootingVariance = (int) (gameSettings.getShootingFrecuency()
+				* SHOOTING_VARIANCE);
+		/** 폭탄 투하 interval과 variance */
+		this.dropInterval = gameSettings.getDropFrecuency();
+		this.dropVariance = (int) (gameSettings.getDropFrecuency()
+				* DROP_VARIANCE);
+		this.baseSpeed = gameSettings.getBaseSpeed();
+		this.movementSpeed = this.baseSpeed;
+		this.positionX = INIT_POS_X;
+		this.positionY = INIT_POS_Y;
+		this.shooters = new ArrayList<EnemyShip>();
+		this.setXpos = INIT_POS_X;
+		this.special_enemy = new ArrayList<Integer>();
 		this.BossStage = gameSettings.checkBoss();
-		if(!this.BossStage){
-			this.gameState = gameState;
-			this.drawManager = Core.getDrawManager();
-			this.logger = Core.getLogger();
-			this.enemyShips = new ArrayList<List<EnemyShip>>();
-			this.currentDirection = Direction.RIGHT;
-			this.movementInterval = 0;
-			this.nShipsWide = gameSettings.getFormationWidth();
-			this.nShipsHigh = gameSettings.getFormationHeight();
-			this.shootingInterval = gameSettings.getShootingFrecuency();
-			this.shootingVariance = (int) (gameSettings.getShootingFrecuency()
-					* SHOOTING_VARIANCE);
-			/** 폭탄 투하 interval과 variance */
-			this.dropInterval = gameSettings.getDropFrecuency();
-			this.dropVariance = (int) (gameSettings.getDropFrecuency()
-					* DROP_VARIANCE);
-			this.baseSpeed = gameSettings.getBaseSpeed();
-			this.movementSpeed = this.baseSpeed;
-			this.positionX = INIT_POS_X;
-			this.positionY = INIT_POS_Y;
-			this.shooters = new ArrayList<EnemyShip>();
-			this.setXpos = INIT_POS_X;
-			this.special_enemy = new ArrayList<Integer>();
-			SpriteType spriteType;
+		SpriteType spriteType;
 
-			this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
-					+ " ship formation in (" + positionX + "," + positionY + ")");
+		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
+				+ " ship formation in (" + positionX + "," + positionY + ")");
 
-			// Each sub-list is a column on the formation.
-			for (int i = 0; i < this.nShipsWide; i++)
-				this.enemyShips.add(new ArrayList<EnemyShip>());
+		// Each sub-list is a column on the formation.
+		for (int i = 0; i < this.nShipsWide; i++)
+			this.enemyShips.add(new ArrayList<EnemyShip>());
 
-			if (nShipsWide > 7)
-				lastStage = true;
+		if (nShipsWide > 7)
+			lastStage = true;
 
-			// The list store a special enemy's index.
-			Random random = new Random();
-			for (int i=0; i< nShipsHigh; i++) {
-				int ran = random.nextInt(nShipsHigh*nShipsWide+1);
-				if (!special_enemy.contains(ran))
-					special_enemy.add(ran);
-			}
+		// The list store a special enemy's index.
+		Random random = new Random();
+		for (int i=0; i< nShipsHigh; i++) {
+			int ran = random.nextInt(nShipsHigh*nShipsWide+1);
+			if (!special_enemy.contains(ran))
+				special_enemy.add(ran);
+		}
 
-			int col = 0;
-			for (List<EnemyShip> column : this.enemyShips) {
-				int ship_index = 0;
-				for (int i = 0; i < this.nShipsHigh; i++) {
+		int col = 0;
+		for (List<EnemyShip> column : this.enemyShips) {
+			int ship_index = 0;
+			for (int i = 0; i < this.nShipsHigh; i++) {
+				if (!BossStage) {
 					if (i / (float) this.nShipsHigh < PROPORTION_C)
 						spriteType = SpriteType.EnemyShipC1;
 					else if (i / (float) this.nShipsHigh < PROPORTION_B
@@ -189,130 +189,97 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						spriteType = SpriteType.EnemyShipA1;
 
 					// special enemy setting
-					if (special_enemy.contains(col*nShipsHigh+ship_index)) {
-						if ((col*nShipsHigh+ship_index)%2==0) {
+					if (special_enemy.contains(col * nShipsHigh + ship_index)) {
+						if ((col * nShipsHigh + ship_index) % 2 == 0) {
 							spriteType = SpriteType.EnemyShipD1;
 						} else {
 							spriteType = SpriteType.EnemyShipE;
 						}
 					}
-
-					EnemyShip enemyShip = null;
-
-					// In the last stage, odd row ships initial position set differently.
-					if (lastStage) {
-						if (ship_index%2!=0) {
-							this.setXpos = 120;
-						} else {
-							this.setXpos = positionX;
-						}
-					}
-
-					switch (spriteType)
-					{
-						case EnemyShipA1:
-							enemyShip = new EnemyShipA((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-							break;
-						case EnemyShipB1:
-							enemyShip = new EnemyShipB((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-							break;
-						case EnemyShipC1:
-							enemyShip = new EnemyShipC((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-							break;
-						case EnemyShipD1:
-							enemyShip = new EnemyShipD((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-							break;
-						case EnemyShipE:
-							enemyShip = new EnemyShipE((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-							break;
-						default:
-							enemyShip = new EnemyShip((SEPARATION_DISTANCE
-									* this.enemyShips.indexOf(column))
-									+ setXpos, (SEPARATION_DISTANCE * i)
-									+ positionY, spriteType,gameState);
-					}
-					column.add(enemyShip);
-					this.shipCount++;
-					ship_index++;
+				} else {
+					spriteType = SpriteType.Boss;
 				}
-				col++;
-			}
 
-			this.shipWidth = this.enemyShips.get(0).get(0).getWidth();
-			this.shipHeight = this.enemyShips.get(0).get(0).getHeight();
+				EnemyShip enemyShip = null;
 
-			this.width = (this.nShipsWide - 1) * SEPARATION_DISTANCE
-					+ this.shipWidth;
-			this.height = (this.nShipsHigh - 1) * SEPARATION_DISTANCE
-					+ this.shipHeight;
-
-			for (List<EnemyShip> column : this.enemyShips)
-				this.shooters.add(column.get(column.size() - 1));
-
-			if (nShipsHigh > 5)
-				moreDiff = true;
-
-			if (moreDiff)
-				complexSpeed = 8;
-			else
-				complexSpeed = 0;
-		}
-		else{
-			this.gameState = gameState;
-			this.drawManager = Core.getDrawManager();
-			this.logger = Core.getLogger();
-			this.enemyShips = new ArrayList<List<EnemyShip>>();
-			this.currentDirection = Direction.RIGHT;
-			this.movementInterval = 0;
-			this.nShipsWide = gameSettings.getFormationWidth();
-			this.nShipsHigh = gameSettings.getFormationHeight();
-			this.shootingInterval = gameSettings.getShootingFrecuency();
-			this.shootingVariance = (int) (gameSettings.getShootingFrecuency()
-					* SHOOTING_VARIANCE);
-			this.baseSpeed = gameSettings.getBaseSpeed();
-			this.movementSpeed = this.baseSpeed;
-			this.positionX = INIT_POS_X;
-			this.positionY = INIT_POS_Y;
-			/** 폭탄 투하 interval과 variance */
-			this.dropInterval = gameSettings.getDropFrecuency();
-			this.dropVariance = (int) (gameSettings.getDropFrecuency()
-					* DROP_VARIANCE);
-			this.shooters = new ArrayList<EnemyShip>();
-			SpriteType spriteType = SpriteType.Boss;
-			EnemyShip enemyShip = null;
-
-			for (int i = 0; i < this.nShipsWide; i++)
-				this.enemyShips.add(new ArrayList<EnemyShip>());
-			for (List<EnemyShip> column : this.enemyShips) {
-				for (int i = 0; i < this.nShipsHigh; i++) {
-					enemyShip = new EnemyBoss((SEPARATION_DISTANCE
-							* this.enemyShips.indexOf(column))
-							+ setXpos, (SEPARATION_DISTANCE * i)
-							+ positionY, spriteType, gameState);
-					column.add(enemyShip);
-					this.shipCount++;
+				// In the last stage, odd row ships initial position set differently.
+				if (lastStage) {
+					if (ship_index%2!=0) {
+						this.setXpos = 120;
+					} else {
+						this.setXpos = positionX;
+					}
 				}
-			}
 
-			for (List<EnemyShip> column : this.enemyShips)
-				this.shooters.add(column.get(column.size() - 1));
+				switch (spriteType)
+				{
+					case EnemyShipA1:
+						enemyShip = new EnemyShipA((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipB1:
+						enemyShip = new EnemyShipB((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipC1:
+						enemyShip = new EnemyShipC((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipD1:
+						enemyShip = new EnemyShipD((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case EnemyShipE:
+						enemyShip = new EnemyShipE((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case Boss:
+						enemyShip = new EnemyBoss((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					default:
+						enemyShip = new EnemyShip((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+				}
+				column.add(enemyShip);
+				this.shipCount++;
+				ship_index++;
+			}
+			col++;
 		}
 
+		this.shipWidth = this.enemyShips.get(0).get(0).getWidth();
+		this.shipHeight = this.enemyShips.get(0).get(0).getHeight();
+
+		this.width = (this.nShipsWide - 1) * SEPARATION_DISTANCE
+				+ this.shipWidth;
+		this.height = (this.nShipsHigh - 1) * SEPARATION_DISTANCE
+				+ this.shipHeight;
+
+		for (List<EnemyShip> column : this.enemyShips)
+			this.shooters.add(column.get(column.size() - 1));
+
+		if (nShipsHigh > 5)
+			moreDiff = true;
+
+		if (moreDiff)
+			complexSpeed = 8;
+		else
+			complexSpeed = 0;
 	}
 
 	/**
