@@ -27,6 +27,8 @@ public class GameState {
 
 	/** Distinguish 1P and 2P mode. */
 	private int gameMode = 0;
+
+	public boolean skillMode;
 	/**
 	 * Constructor for 1p mode.
 	 * 
@@ -155,5 +157,8 @@ public class GameState {
 
 	public int livesRemaining1() {
 		return 0;
+	}
+	public void setSkillMode(boolean skill){
+		skillMode = skill;
 	}
 }

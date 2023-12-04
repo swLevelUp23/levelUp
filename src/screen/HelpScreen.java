@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 
 public class HelpScreen extends Screen{
 
+    static int page = 1;
+
     public HelpScreen(int width, int height, int fps) {
         super(width, height, fps);
 
@@ -28,12 +30,17 @@ public class HelpScreen extends Screen{
             this.returnCode = 1;
             this.isRunning = false;
         }
+        else if (inputManager.isKeyDown(KeyEvent.VK_LEFT) && this.inputDelay.checkFinished())
+            page = 1;
+        else if(inputManager.isKeyDown(KeyEvent.VK_RIGHT) && this.inputDelay.checkFinished())
+            page = 2;
+
         draw();
     }
 
     private void draw() {
         drawManager.initDrawing(this);
-        drawManager.drawHelpScreen(this);
+        drawManager.drawHelpScreen(this, page);
         drawManager.completeDrawing(this);
     }
 }
