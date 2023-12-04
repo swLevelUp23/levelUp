@@ -20,6 +20,10 @@ public class GameSettings {
 	private double itemSpeed;
 	/** Check if the stage is boss stage. */
 	private boolean BossStage;
+	/** 아이템의 발생 빈도
+	 * 레벨 0에서는 무조건 발생하도록 true
+	 * 나머지 레벨에서는 랜덤으로 발생하도록 false */
+	private boolean itemPro;
 	/**
 	 * Constructor.
 	 * 
@@ -83,6 +87,7 @@ public class GameSettings {
 
 	/** 폭탄 투하 빈도 */
 	public final int getDropFrecuency() { return shootingFrecuency + 1000; }
+	public final boolean getItemPro() { return itemPro; }
 
 	public final boolean checkBoss() { return this.BossStage; }
 }

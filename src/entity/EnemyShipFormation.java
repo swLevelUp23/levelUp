@@ -130,6 +130,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 * @param gameSettings
 	 *            Current game settings.
 	 */
+
+
 	public EnemyShipFormation(final GameSettings gameSettings, final GameState gameState) {
 		this.gameState = gameState;
 		this.drawManager = Core.getDrawManager();
