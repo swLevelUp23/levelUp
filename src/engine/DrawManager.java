@@ -1432,12 +1432,18 @@ public final class DrawManager {
 		// left, right, attack key
 		backBufferGraphics.setFont(fontRegular);
 		backBufferGraphics.setColor(Color.GRAY);
-		backBufferGraphics.drawString(keyValue[0], x1-fontRegularMetrics.stringWidth(keyValue[0])/2+25, y2+30);
-		backBufferGraphics.drawString(keyValue[1], x3-fontRegularMetrics.stringWidth(keyValue[1])/2+25, y2+30);
-		backBufferGraphics.drawString(keyValue[2], x2-fontRegularMetrics.stringWidth(keyValue[2])/2+25, y2-20);
+		backBufferGraphics.drawString(keyValue[0], x1-fontRegularMetrics.stringWidth(keyValue[0])/2+25, y2+30); // left
+		backBufferGraphics.drawString(keyValue[1], x3-fontRegularMetrics.stringWidth(keyValue[1])/2+25, y2+30); // right
+		backBufferGraphics.drawString(keyValue[2], x2-fontRegularMetrics.stringWidth(keyValue[2])/2+25, y2-20); // shoot
+		// left, right, attack 안내
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("left", x1+12, y2+45);
+		backBufferGraphics.drawString("right", x3+10, y2+45);
+		backBufferGraphics.drawString("shoot", x2+10, y2-5);
+		// item key
 		backBufferGraphics.setColor(Color.YELLOW);
 		backBufferGraphics.drawString(keyValue[7], x2+20, y2+120);
-		// item key
 		backBufferGraphics.drawString("Use item:", x1-20, y2+120);
 		if(skillMode){
 			// booster key

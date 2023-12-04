@@ -317,7 +317,8 @@ public class GameScreen extends Screen {
 		if(gameState.getMode() == 2) {
 			this.score += LIFE_SCORE * Math.max(0,(this.lives + this.lives2 - 1));
 		}
-		this.logger.info("Screen cleared with a score of " + this.score);
+		if(level != 0)
+			this.logger.info("Screen cleared with a score of " + this.score);
 
 		return this.returnCode;
 	}
@@ -1220,6 +1221,8 @@ public class GameScreen extends Screen {
 	 * @return Current game state.
 	 */
 	public final GameState getGameState1p() {
+		// level0인 경우 score 점수를 초기화
+		if(this.level==0) this.score = 0;
 		return new GameState(this.level, this.score, this.lives,
 				this.bulletsShot1, this.shipsDestroyed);
 	}
