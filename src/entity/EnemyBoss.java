@@ -7,9 +7,8 @@ import engine.GameState;
 import java.util.Set;
 
 public class EnemyBoss extends EnemyShip {
-    private int fullHP;
     /** HP의 배율 */
-    private final double HPPOWER = .1;
+    private int HPPOWER = 10;
     /** 총알의 속도 배율 */
     private final double BULLETSPEEDPOWER = 2;
     /** 슈팅 쿨다운 배율 */
@@ -21,7 +20,6 @@ public class EnemyBoss extends EnemyShip {
                      final DrawManager.SpriteType spriteType, final GameState gameState) {
         super(positionX, positionY, spriteType, gameState);
         super.HP = (int)(super.HP * HPPOWER);
-        fullHP = super.HP;
         super.spriteType = spriteType.Boss;
         super.pointValue = POINT;
     }
@@ -33,7 +31,7 @@ public class EnemyBoss extends EnemyShip {
         }
     }
 
-    public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown, int boss) {
+    public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
         //속도가 다른 3개의 총알 발사
         bullets.add(BulletPool.getBullet(positionX
                 + width / 2, positionY, (int)(super.BULLET_SPEED),0));
@@ -44,5 +42,7 @@ public class EnemyBoss extends EnemyShip {
         shootingCooldown.timedown(BULLETCOOLDOWN);
     }
 
-    public int getFullHP() { return fullHP; }
+    public void reducelives() { HPPOWER--; }
+
+    public int remainlives() { return HPPOWER; }
 }
