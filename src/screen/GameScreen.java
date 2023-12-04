@@ -822,6 +822,11 @@ public class GameScreen extends Screen {
 					/ 12, Color.GREEN);
 		}
 
+		boss = gameSettings.checkBoss();
+		if(boss){
+			int remainlifes= drawManager.life(bosslife);
+			drawManager.drawBossLife(this, remainlifes);
+		}
 		if(manual){
 			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 90, 180);
 			drawManager.drawManualMenu(this);
