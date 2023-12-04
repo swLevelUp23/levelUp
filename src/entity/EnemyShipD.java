@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class EnemyShipD extends EnemyShip {
     /** HP의 배율 */
-    private final double HPPOWER = 2;
+    private final double HPPOWER = 1.5;
     /** 총알의 속도 배율 */
     private final double BULLETSPEEDPOWER = 2;
     /** 슈팅 쿨다운 배율 */
@@ -40,7 +40,8 @@ public class EnemyShipD extends EnemyShip {
             case 1:
                 changeColor(Color.GREEN);
                 break;
-            default: changeColor(Color.RED);
+            default:
+                changeColor(Color.RED);
         }
     }
     public final void shoot(final Set<Bullet> bullets, Cooldown shootingCooldown) {
