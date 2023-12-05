@@ -958,10 +958,12 @@ public class GameScreen extends Screen {
 									this.shipsDestroyed++;
 									this.enemyShipFormation.destroy(enemyShip);
 								}
-							}else {
-                                this.score += enemyShip.getPointValue();
-                                this.shipsDestroyed++;
-                                this.enemyShipFormation.destroy(enemyShip);
+							} else {
+								if (enemyShip.getColor()==Color.WHITE || enemyShip.getColor()==Color.GREEN) {
+									this.score += enemyShip.getPointValue();
+									this.shipsDestroyed++;
+								}
+								this.enemyShipFormation.destroy(enemyShip);
                             }
 
 							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
