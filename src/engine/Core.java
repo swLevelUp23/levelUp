@@ -136,7 +136,6 @@ public final class Core {
 		int height = frame.getHeight();
 
 		gameSettings = new ArrayList<GameSettings>();
-		gameSettings.add(SETTINGS_LEVEL_0);
 		gameSettings.add(SETTINGS_LEVEL_1);
 		gameSettings.add(SETTINGS_LEVEL_2);
 		gameSettings.add(SETTINGS_LEVEL_3);
@@ -156,7 +155,7 @@ public final class Core {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
 			// 1p에는 level0부터, 2p는 level1부터 시작
-			if(SelectScreen.gameMode == 1) gameState = new GameState(0, 0, MAX_LIVES, 0, 0);
+			if (SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
@@ -197,7 +196,7 @@ public final class Core {
 					}
 
 					currentScreen = new GameScreen(gameState,
-							gameSettings.get(gameState.getLevel()),
+							gameSettings.get(gameState.getLevel()-1),
 							bonusLife, width, height, FPS);
 
 					SoundManager.resetBGM();
@@ -337,6 +336,8 @@ public final class Core {
 				break;
 			case 10:
 				// Tutorial(level 0)
+				gameState = new GameState(0, 0, MAX_LIVES, 0, 0);
+
 				currentScreen = new GameScreen(gameState,
 						SETTINGS_LEVEL_0,false, width, height, FPS);
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
