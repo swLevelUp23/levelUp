@@ -95,6 +95,10 @@ public class GameState {
 		return level;
 	}
 
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	/**
 	 * @return the gameMode
 	 */
