@@ -201,7 +201,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						}
 					}
 				} else {
-					spriteType = SpriteType.EnemyShipC1;
+					if (i==1 || i==5) {
+						spriteType = SpriteType.EnemyShipE;
+					} else if (i==2 || i==3 || i==4) {
+						spriteType = SpriteType.EnemyShipD1;
+					} else {
+						spriteType = SpriteType.EnemyShipC1;
+					}
 				}
 
 				EnemyShip enemyShip = null;

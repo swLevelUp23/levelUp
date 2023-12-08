@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EnemyShipFormationTest {
     @Test
-    void testFormation() {
+    void testEnemyShipFormation() {
         assertAll(
                 "multi",
                 () -> {
@@ -45,14 +45,21 @@ class EnemyShipFormationTest {
 
                     DrawManager.SpriteType checkSpritetype;
 
+
                     checkSpritetype = BossenemyShipFormation.init_formation.get(0).get(0).spriteType;
                     assertEquals(DrawManager.SpriteType.EnemyShipC1, checkSpritetype);
 
-                    int formationLength = BossenemyShipFormation.init_formation.get(2).size();
-                    assertEquals(4, formationLength);
+                    checkSpritetype = BossenemyShipFormation.init_formation.get(1).get(2).spriteType;
+                    assertEquals(DrawManager.SpriteType.EnemyShipD1, checkSpritetype);
+
+                    checkSpritetype = BossenemyShipFormation.init_formation.get(3).get(2).spriteType;
+                    assertEquals(DrawManager.SpriteType.EnemyShipE, checkSpritetype);
 
                     checkSpritetype = BossenemyShipFormation.init_formation.get(8).get(0).spriteType;
                     assertEquals(DrawManager.SpriteType.Boss, checkSpritetype);
+
+                    int formationLength = BossenemyShipFormation.init_formation.get(2).size();
+                    assertEquals(4, formationLength);
                 }
         );
     }
