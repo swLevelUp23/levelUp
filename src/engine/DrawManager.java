@@ -1355,7 +1355,8 @@ public final class DrawManager {
 	}
 
 	public EnemyGraphics dummyShip = new EnemyGraphics(SpriteType.EnemyShipA1);
-	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
+	public void drawClear(final Screen screen, final boolean acceptsInput, final int option,
+						  final int level, final int mode, final boolean skill) {
 
 		String modeString = mode + " PLAYER MODE";
 		backBufferGraphics.setColor(Color.WHITE);
@@ -1377,20 +1378,30 @@ public final class DrawManager {
 
 		String continueString = "Continue";
 		String exitString = "Exit";
+		String menuString = "Press space to go to menu";
 
-		if (option == 2)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, continueString,
-				screen.getHeight() / 4 * 3);
+		if (level == 0) {
+			if (acceptsInput)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.GRAY);
+			drawCenteredRegularString(screen, menuString,
+					screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 3);
+		} else {
+			if (option == 2)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, continueString,
+					screen.getHeight() / 4 * 3);
 
-		if (option == 1)
-			backBufferGraphics.setColor(Color.GREEN);
-		else
-			backBufferGraphics.setColor(Color.WHITE);
-		drawCenteredRegularString(screen, exitString,
-				screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
+			if (option == 1)
+				backBufferGraphics.setColor(Color.GREEN);
+			else
+				backBufferGraphics.setColor(Color.WHITE);
+			drawCenteredRegularString(screen, exitString,
+					screen.getHeight() / 4 * 3 + fontRegularMetrics.getHeight() * 2);
+		}
 
 		drawEntity(dummyShip, 350, 130, Color.white);
 		drawEntity(dummyShip, 270, 250, Color.white);

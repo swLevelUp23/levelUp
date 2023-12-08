@@ -343,7 +343,6 @@ public final class Core {
 				LOGGER.info("Starting " + WIDTH + "x" + HEIGHT
 						+ " help screen at " + FPS + " fps.");
 				returnCode = frame.setScreen(currentScreen);
-				LOGGER.info(String.valueOf(returnCode));
 
 				gameState.setLevel(1);
 				currentScreen = new ClearScreen(width, height, FPS, gameState);
