@@ -123,7 +123,7 @@ public final class DrawManager {
 	/**
 	 * Private constructor.
 	 */
-	private DrawManager() {
+	public DrawManager() {
 		fileManager = Core.getFileManager();
 		logger = Core.getLogger();
 		logger.info("Started loading resources.");
@@ -378,12 +378,17 @@ public final class DrawManager {
 			drawEntity(dummyShip, 180 + 30 * i, 13);
 	}
 
-	public void drawBossLife(final Screen screen, final int fullHp, final int hp){
-		int lives = (hp/fullHp * 100) * (frame.getWidth()-10) ;
+	public int life(final int hp){
+		double lives = (hp/10 + 0.1*(hp%10)) * (434-20) ; //frame.getWidth()=454
+		return (int)lives;
+	}
+
+	public void drawBossLife(final Screen screen, final int remainlives){
+		//System.out.println(frame.getWidth());
 		backBufferGraphics.setColor(Color.red);
-		backBufferGraphics.drawRect(5, 40 , frame.getWidth()-5, 10);
-		backBufferGraphics.fillRect(5, 40 , lives, 10);
-		backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
+		backBufferGraphics.drawRect(10, 85 , frame.getWidth()-20, 10);
+		backBufferGraphics.fillRect(10, 85 , remainlives, 10);
+		//backBufferGraphics.drawString((hp/fullHp * 100)+"%", frame.getWidth()/2 - 20, 40);
 	}
 
 	/**
@@ -489,7 +494,6 @@ public final class DrawManager {
 		backBufferGraphics.drawLine(0, positionY + 1, screen.getWidth(),
 				positionY + 1);
 	}
-
 	/**
 	 * Draws game title.x
 	 *
@@ -1344,18 +1348,19 @@ public final class DrawManager {
 	}
 
 	public EnemyGraphics dummyShip = new EnemyGraphics(SpriteType.EnemyShipA1);
-	public void drawClear(final Screen screen, final int option, final int level, final int mode, final boolean skill) {
+	public void drawClear(final Screen screen, final int option, final int level, final int mode) {
 
 		String modeString = mode + " PLAYER MODE";
 		backBufferGraphics.setColor(Color.WHITE);
 		drawCenteredRegularString(screen, modeString, screen.getHeight() / 3);
 
 		String titleString = "LEVEL  " + level + "  Clear";
+
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleString, screen.getHeight() / 3 +  fontRegularMetrics.getHeight() * 2);
 
 		String skillString;
-		if (skill)
+		if (SelectScreen.skillModeOn)
 			skillString = "SKILL MODE ON";
 		else
 			skillString = "SKILL MODE OFF";
@@ -1441,6 +1446,56 @@ public final class DrawManager {
 		}
 
 
+	}
+
+	public void drawLevel0(final Screen screen, Color color, boolean skillMode){
+		backBufferGraphics.setColor(color);
+		// left, right, attack, burst1, burst2, reload, booster, item key
+		String[] keyValue = Core.getKeySettingStringArray();
+		int y1 = screen.getHeight() / 5 * 3 + 50;
+		int y2 = y1+50;
+		int x1 = screen.getWidth() / 2 + 50;
+		int x2 = x1+50;
+		int x3 = x2+50;
+
+		// manual key
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.setColor(Color.CYAN);
+		backBufferGraphics.drawString("Manual: Shift", screen.getHeight()/2-120, 25);
+		// pause key
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.setColor(Color.YELLOW);
+		backBufferGraphics.drawString("Pause: Ctrl", screen.getHeight()/2-30, 25);
+		// left, right, attack key
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.setColor(Color.GRAY);
+		backBufferGraphics.drawString(keyValue[0], x1-fontRegularMetrics.stringWidth(keyValue[0])/2+25, y2+30); // left
+		backBufferGraphics.drawString(keyValue[1], x3-fontRegularMetrics.stringWidth(keyValue[1])/2+25, y2+30); // right
+		backBufferGraphics.drawString(keyValue[2], x2-fontRegularMetrics.stringWidth(keyValue[2])/2+25, y2-20); // shoot
+		// left, right, attack 안내
+		backBufferGraphics.setFont(fontSmall);
+		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.drawString("left", x1+12, y2+45);
+		backBufferGraphics.drawString("right", x3+10, y2+45);
+		backBufferGraphics.drawString("shoot", x2+10, y2-5);
+		// item key
+		backBufferGraphics.setColor(Color.YELLOW);
+		backBufferGraphics.drawString(keyValue[7], x2+20, y2+120);
+		backBufferGraphics.drawString("Use item:", x1-20, y2+120);
+		if(skillMode){
+			// booster key
+			backBufferGraphics.setFont(fontSmall);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("Booster", x1/15, y2-20);
+			backBufferGraphics.setColor(Color.GRAY);
+			backBufferGraphics.drawString("Press " + keyValue[6],x1/15, y2);
+			// burst1,2 key
+			backBufferGraphics.setFont(fontSmall);
+			backBufferGraphics.setColor(Color.WHITE);
+			backBufferGraphics.drawString("Burst", x1/15, y2+20);
+			backBufferGraphics.setColor(Color.GRAY);
+			backBufferGraphics.drawString("Press " + keyValue[3] + " and " + keyValue[4] + " alternately ", x1/15, y2+40);
+		}
 	}
 
 	public void drawHelpScreen(final Screen screen, final int page){

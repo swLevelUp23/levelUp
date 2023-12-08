@@ -103,6 +103,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int complexSpeed;
 	/** check the last stage. */
 	private boolean lastStage = false;
+	/** Check if the stage is boss stage. */
+	private boolean BossStage;
 	/** setting the x position of the last stage ships. */
 	private int setXpos;
 	/** track the y position of the last stage ships. */
@@ -128,6 +130,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	 * @param gameSettings
 	 *            Current game settings.
 	 */
+
+
 	public EnemyShipFormation(final GameSettings gameSettings, final GameState gameState) {
 		this.gameState = gameState;
 		this.drawManager = Core.getDrawManager();
@@ -151,6 +155,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		this.shooters = new ArrayList<EnemyShip>();
 		this.setXpos = INIT_POS_X;
 		this.special_enemy = new ArrayList<Integer>();
+		this.BossStage = gameSettings.checkBoss();
 		SpriteType spriteType;
 
 		this.logger.info("Initializing " + nShipsWide + "x" + nShipsHigh
@@ -175,22 +180,26 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (List<EnemyShip> column : this.enemyShips) {
 			int ship_index = 0;
 			for (int i = 0; i < this.nShipsHigh; i++) {
-				if (i / (float) this.nShipsHigh < PROPORTION_C)
-					spriteType = SpriteType.EnemyShipC1;
-				else if (i / (float) this.nShipsHigh < PROPORTION_B
-						+ PROPORTION_C)
-					spriteType = SpriteType.EnemyShipB1;
+				if (!BossStage) {
+					if (i / (float) this.nShipsHigh < PROPORTION_C)
+						spriteType = SpriteType.EnemyShipC1;
+					else if (i / (float) this.nShipsHigh < PROPORTION_B
+							+ PROPORTION_C)
+						spriteType = SpriteType.EnemyShipB1;
 
-				else
-					spriteType = SpriteType.EnemyShipA1;
+					else
+						spriteType = SpriteType.EnemyShipA1;
 
-				// special enemy setting
-				if (special_enemy.contains(col*nShipsHigh+ship_index)) {
-					if ((col*nShipsHigh+ship_index)%2==0) {
-						spriteType = SpriteType.EnemyShipD1;
-					} else {
-						spriteType = SpriteType.EnemyShipE;
+					// special enemy setting
+					if (special_enemy.contains(col * nShipsHigh + ship_index)) {
+						if ((col * nShipsHigh + ship_index) % 2 == 0) {
+							spriteType = SpriteType.EnemyShipD1;
+						} else {
+							spriteType = SpriteType.EnemyShipE;
+						}
 					}
+				} else {
+					spriteType = SpriteType.Boss;
 				}
 
 				EnemyShip enemyShip = null;
@@ -232,6 +241,12 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						break;
 					case EnemyShipE:
 						enemyShip = new EnemyShipE((SEPARATION_DISTANCE
+								* this.enemyShips.indexOf(column))
+								+ setXpos, (SEPARATION_DISTANCE * i)
+								+ positionY, spriteType,gameState);
+						break;
+					case Boss:
+						enemyShip = new EnemyBoss((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);

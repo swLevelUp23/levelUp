@@ -120,8 +120,7 @@ public class ClearScreen extends Screen {
         drawManager.drawHighScore(this, this.highScore);
         drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1, Color.GREEN);
 
-        drawManager.drawClear(this, this.returnCode, this.level, gameState.getMode(), gameState.skillMode);
-
+        drawManager.drawClear(this, this.returnCode, this.level, gameState.getMode());
         drawManager.completeDrawing(this);
     }
 

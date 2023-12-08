@@ -122,6 +122,10 @@ public class GameScreen extends Screen {
 	/** Checks life increase item is used. **/
 	private boolean haslifeItemUsed = false;
 
+	/** Checks if this stage is boss stage. **/
+	private boolean boss;
+	private int bosslife = 10;
+
 
 
 	/**
@@ -260,7 +264,13 @@ public class GameScreen extends Screen {
 		this.bullet_count2=0;
 
 		// Adjust bullet shooting interval and speed by level.
-		if (this.level==1) {
+		if(this.level==0){
+			this.ship.setOriginalSpeed(5);
+			if(gameState.getMode()==2){
+				this.ship2.setOriginalSpeed(5);
+			}
+		}
+		else if (this.level==1) {
 			this.ship.setOriginalSpeed(4);
 			if (gameState.getMode()==2) {
 				this.ship2.setOriginalSpeed(4);
@@ -311,7 +321,8 @@ public class GameScreen extends Screen {
 		if(gameState.getMode() == 2) {
 			this.score += LIFE_SCORE * Math.max(0,(this.lives + this.lives2 - 1));
 		}
-		this.logger.info("Screen cleared with a score of " + this.score);
+		if(level != 0)
+			this.logger.info("Screen cleared with a score of " + this.score);
 
 		return this.returnCode;
 	}
@@ -715,7 +726,6 @@ public class GameScreen extends Screen {
 
 		if (SelectScreen.skillModeOn) {
 			drawManager.drawAmmo(this, this.magazine, this.bullet_count);
-
 			if (this.gameState.getMode() == 2) {
 				drawManager.drawAmmo2(this, this.magazine2, this.bullet_count2);
 			}
@@ -729,6 +739,10 @@ public class GameScreen extends Screen {
 			}
 			if (this.lives < 1) {
 				drawManager.clearEntity(this.ship, this.ship.getPositionX(), this.ship.getPositionY());
+			}
+			// level0은 mode1일 때만 생성
+			if(level == 0){
+				drawManager.drawLevel0(this, Color.GRAY, SelectScreen.skillModeOn);
 			}
 		} else {
 			if (this.lives > 0) {
@@ -777,7 +791,6 @@ public class GameScreen extends Screen {
 				drawManager.drawEntity(auxiliaryShip, auxiliaryShip.getPositionX(), auxiliaryShip.getPositionY());
 			}
 		}
-
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawItems(this, this.ship.getItemQueue().getItemQue(), this.ship.getItemQueue().getSize());
@@ -809,6 +822,11 @@ public class GameScreen extends Screen {
 					/ 12, Color.GREEN);
 		}
 
+		boss = gameSettings.checkBoss();
+		if(boss){
+			int remainlifes= drawManager.life(bosslife);
+			drawManager.drawBossLife(this, remainlifes);
+		}
 		if(manual){
 			drawManager.drawWindow(this, 0, this.height / 2 - this.height / 12 - 90, 180);
 			drawManager.drawManualMenu(this);
@@ -824,6 +842,9 @@ public class GameScreen extends Screen {
 			drawManager.drawHorizontalLine(this, this.height / 2 - this.height / 12, Color.YELLOW);
 			drawManager.drawHorizontalLine(this, this.height / 2 + this.height / 12, Color.YELLOW);
 		}
+
+
+
 
 		drawManager.completeDrawing(this);
 	}
@@ -927,10 +948,22 @@ public class GameScreen extends Screen {
                                     this.score += enemy.getPointValue();
                                     this.shipsDestroyed++;
                                 }
-                            } else {
-                                this.score += enemyShip.getPointValue();
-                                this.shipsDestroyed++;
-                                this.enemyShipFormation.destroy(enemyShip);
+                            }else if(enemyShip.getSpriteType() == DrawManager.SpriteType.Boss){
+								EnemyBoss enemyBoss = (EnemyBoss) enemyShip;
+								enemyBoss.reducelives();
+								bosslife = enemyBoss.remainlives();
+								System.out.println("Boss Life: " + enemyBoss.remainlives() + "/10");
+								if(enemyBoss.remainlives() <= 0){
+									this.score += enemyShip.getPointValue();
+									this.shipsDestroyed++;
+									this.enemyShipFormation.destroy(enemyShip);
+								}
+							} else {
+								if (enemyShip.getColor()==Color.WHITE || enemyShip.getColor()==Color.GREEN) {
+									this.score += enemyShip.getPointValue();
+									this.shipsDestroyed++;
+								}
+								this.enemyShipFormation.destroy(enemyShip);
                             }
 
 							if (enemyShip.hasItem() && enemyShip.isDestroyed()) {
@@ -1209,6 +1242,8 @@ public class GameScreen extends Screen {
 	 * @return Current game state.
 	 */
 	public final GameState getGameState1p() {
+		// level0인 경우 score 점수를 초기화
+		if(this.level==0) this.score = 0;
 		return new GameState(this.level, this.score, this.lives,
 				this.bulletsShot1, this.shipsDestroyed);
 	}

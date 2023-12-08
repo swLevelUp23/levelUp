@@ -32,8 +32,11 @@ public final class Core {
 	/** Levels between extra life. */
 	private static final int EXTRA_LIFE_FRECUENCY = 3;
 	/** Total number of levels. */
-	private static final int NUM_LEVELS = 7;
+	private static final int NUM_LEVELS = 8;
 
+	/** Difficulty settings for intro stage. */
+	private static final GameSettings SETTINGS_LEVEL_0 =
+			new GameSettings(1, 4, 70, 2000, 5.5);
 	/** Difficulty settings for level 1. */
 	private static final GameSettings SETTINGS_LEVEL_1 =
 			new GameSettings(5, 4, 60, 2000, 5.5);
@@ -55,6 +58,8 @@ public final class Core {
 	/** Difficulty settings for level 7. */
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8);
+	private static final GameSettings SETTINGS_BOSS =
+			new GameSettings(1, 1, 3, 500,4.8,true);
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
@@ -131,6 +136,7 @@ public final class Core {
 		int height = frame.getHeight();
 
 		gameSettings = new ArrayList<GameSettings>();
+		gameSettings.add(SETTINGS_LEVEL_0);
 		gameSettings.add(SETTINGS_LEVEL_1);
 		gameSettings.add(SETTINGS_LEVEL_2);
 		gameSettings.add(SETTINGS_LEVEL_3);
@@ -138,6 +144,8 @@ public final class Core {
 		gameSettings.add(SETTINGS_LEVEL_5);
 		gameSettings.add(SETTINGS_LEVEL_6);
 		gameSettings.add(SETTINGS_LEVEL_7);
+		gameSettings.add(SETTINGS_BOSS);
+
 
 		AchievementManager.getInstance().markAchievementAsAchieved(Achievement.ADVENTURE_START);
 
@@ -147,7 +155,8 @@ public final class Core {
 		do {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
-			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
+			// 1p에는 level0부터, 2p는 level1부터 시작
+			if(SelectScreen.gameMode == 1) gameState = new GameState(0, 0, MAX_LIVES, 0, 0);
 			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
@@ -188,7 +197,7 @@ public final class Core {
 					}
 
 					currentScreen = new GameScreen(gameState,
-							gameSettings.get(gameState.getLevel() - 1),
+							gameSettings.get(gameState.getLevel()),
 							bonusLife, width, height, FPS);
 
 					SoundManager.resetBGM();
@@ -220,8 +229,8 @@ public final class Core {
 								gameState.getShipsDestroyed2());
 					}
 					AchievementManager.getInstance().checkAchievements(gameState);
-					if (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0))
+					if ((((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+							|| (gameState.getMode() == 2 && gameState.getLivesRemaining1p() > 0 && gameState.getLivesRemaining2p() > 0)))
 							&& gameState.getLevel() <= NUM_LEVELS) {
 						currentScreen = new ClearScreen(width, height, FPS, gameState);
 						LOGGER.info("Starting 	" + WIDTH + "x" + HEIGHT
@@ -230,8 +239,8 @@ public final class Core {
 						LOGGER.info("Closing clear screen.");
 						if (returnCode == 1) break;
 					}
-				} while ((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
-						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0))
+				} while (((gameState.getMode() == 1 && gameState.getLivesRemaining1p() > 0)
+						|| (gameState.getMode() == 2 && (gameState.getLivesRemaining1p() > 0 || gameState.getLivesRemaining2p() > 0)))
 						&& gameState.getLevel() <= NUM_LEVELS);
 
 				if (returnCode == 1) break;
