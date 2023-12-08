@@ -113,6 +113,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int checkFirst = 1;
 	/** store special enemy ship's index */
 	private List<Integer> special_enemy;
+	/** save initial formation for testing */
+	public List<List<EnemyShip>> init_formation;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -287,6 +289,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
+
+		this.init_formation = this.enemyShips;
 
 		if (nShipsHigh > 5)
 			moreDiff = true;
