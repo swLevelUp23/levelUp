@@ -113,6 +113,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private int checkFirst = 1;
 	/** store special enemy ship's index */
 	private List<Integer> special_enemy;
+	/** save initial formation for testing */
+	public List<List<EnemyShip>> init_formation;
 
 	/** Directions the formation can move. */
 	private enum Direction {
@@ -165,7 +167,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (int i = 0; i < this.nShipsWide; i++)
 			this.enemyShips.add(new ArrayList<EnemyShip>());
 
-		if (nShipsWide > 7)
+		if (nShipsWide > 7 && !BossStage)
 			lastStage = true;
 
 		// The list store a special enemy's index.
@@ -199,7 +201,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 						}
 					}
 				} else {
-					spriteType = SpriteType.Boss;
+					if (i==1 || i==5) {
+						spriteType = SpriteType.EnemyShipE;
+					} else if (i==2 || i==3 || i==4) {
+						spriteType = SpriteType.EnemyShipD1;
+					} else {
+						spriteType = SpriteType.EnemyShipC1;
+					}
 				}
 
 				EnemyShip enemyShip = null;
@@ -211,6 +219,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					} else {
 						this.setXpos = positionX;
 					}
+				}
+
+				if (BossStage) {
+					this.setXpos = 70;
+					this.positionY = 130;
 				}
 
 				switch (spriteType)
@@ -245,23 +258,31 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 						break;
-					case Boss:
-						enemyShip = new EnemyBoss((SEPARATION_DISTANCE
-								* this.enemyShips.indexOf(column))
-								+ setXpos, (SEPARATION_DISTANCE * i)
-								+ positionY, spriteType,gameState);
-						break;
 					default:
 						enemyShip = new EnemyShip((SEPARATION_DISTANCE
 								* this.enemyShips.indexOf(column))
 								+ setXpos, (SEPARATION_DISTANCE * i)
 								+ positionY, spriteType,gameState);
 				}
-				column.add(enemyShip);
+				if (BossStage) {
+					if (i != 2 && i != 3 && i != 4)
+						column.add(enemyShip);
+					else if (col != 2 && col != 3 && col != 4 && col != 5)
+						column.add(enemyShip);
+				} else {
+					column.add(enemyShip);
+				}
+
 				this.shipCount++;
 				ship_index++;
 			}
 			col++;
+		}
+
+		if (BossStage) {
+			List<EnemyShip> Bosslist = new ArrayList<EnemyShip>();
+			Bosslist.add(new EnemyBoss(205, 230, SpriteType.Boss, gameState));
+			this.enemyShips.add(Bosslist);
 		}
 
 		this.shipWidth = this.enemyShips.get(0).get(0).getWidth();
@@ -274,6 +295,8 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
+
+		this.init_formation = this.enemyShips;
 
 		if (nShipsHigh > 5)
 			moreDiff = true;
@@ -392,7 +415,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					/** if ship remains one switch flag.
 					 * it works only on odd row
 					 * */
-					if(shipCount==1) flag*= -1;
+					if (shipCount == 1) flag *= -1;
 				}
 			}
 
@@ -425,10 +448,11 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			if (moreDiff) {
 				for (List<EnemyShip> column : this.enemyShips) {
 					for (EnemyShip enemyShip : column) {
-						if ((int)((enemyShip.getpositionY()-100)/40)%2!=0) {
-							enemyShip.move(complexSpeed, 0);
-						} else
-							enemyShip.move(-complexSpeed, 0);
+						if (!BossStage)
+							if ((int) ((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
+								enemyShip.move(complexSpeed, 0);
+							} else
+								enemyShip.move(-complexSpeed, 0);
 					}
 				}
 				complexSpeed = -complexSpeed;
@@ -441,21 +465,23 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 				}
 			}
 
-			for (List<EnemyShip> column : this.enemyShips)
+			for (List<EnemyShip> column : this.enemyShips) {
 				for (EnemyShip enemyShip : column) {
 					// In the last stage, the enemy's ships started out in different positions,
 					// so their coordinates changed accordingly.
-					if (lastStage) {
-						if ((int)((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
-							enemyShip.move(-movementX, movementY);
+					if (!BossStage)
+						if (lastStage) {
+							if ((int) ((enemyShip.getpositionY() - 100) / 40) % 2 != 0) {
+								enemyShip.move(-movementX, movementY);
+							} else {
+								enemyShip.move(movementX, movementY);
+							}
 						} else {
 							enemyShip.move(movementX, movementY);
 						}
-					} else {
-						enemyShip.move(movementX, movementY);
-					}
 					enemyShip.update();
 				}
+			}
 		}
 	}
 

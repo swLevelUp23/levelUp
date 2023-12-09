@@ -59,7 +59,7 @@ public final class Core {
 	private static final GameSettings SETTINGS_LEVEL_7 =
 			new GameSettings(8, 7, 2, 500,4.8);
 	private static final GameSettings SETTINGS_BOSS =
-			new GameSettings(1, 1, 3, 500,4.8,true);
+			new GameSettings(8, 7, 3, 500,4.8,true);
 	private static int LEVEL;
 
 	/** Frame to draw the screen on. */
@@ -156,7 +156,7 @@ public final class Core {
 			// TODO 1P mode와 2P mode 진입 구현
 			// TODO gameState 생성자에 따라 1P와 2P mode 구분
 			// 1p에는 level0부터, 2p는 level1부터 시작
-			if(SelectScreen.gameMode == 1) gameState = new GameState(0, 0, MAX_LIVES, 0, 0);
+			if(SelectScreen.gameMode == 1) gameState = new GameState(1, 0, MAX_LIVES, 0, 0);
 			else gameState = new GameState(1, 0, MAX_LIVES, MAX_LIVES, 0, 0, 0, 0);
 
 			switch (returnCode) {
